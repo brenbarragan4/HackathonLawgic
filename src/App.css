@@ -1735,39 +1735,35 @@
 .mock-stack {
   position: relative;
   display: inline-block;
-  padding: 18px 0 0 30px;
+  padding: 22px 40px 22px 0;
 }
-.mock-stack .mock-card {
-  position: relative;
-  z-index: 2;
-}
+
+/* El CONTRATO es ahora el elemento grande y principal */
 .mock-doc {
-  position: absolute;
-  top: -16px;
-  left: -30px;
-  width: 178px;
+  position: relative;
+  z-index: 1;
+  width: 330px;
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 12px;
-  padding: 16px 16px 24px;
-  transform: rotate(-8deg);
-  box-shadow: 0 14px 32px rgba(15, 31, 61, 0.14);
-  z-index: 1;
+  border-radius: 16px;
+  padding: 32px 30px 46px;
+  transform: rotate(-3deg);
+  box-shadow: 0 22px 50px rgba(28, 26, 23, 0.13);
 }
 .doc-tag {
   display: block;
   font-weight: 800;
-  font-size: 12px;
-  letter-spacing: 2.5px;
+  font-size: 14px;
+  letter-spacing: 3px;
   color: var(--head);
-  margin-bottom: 12px;
+  margin-bottom: 20px;
 }
 .doc-line {
   display: block;
-  height: 7px;
-  border-radius: 4px;
+  height: 9px;
+  border-radius: 5px;
   background: var(--line);
-  margin: 9px 0;
+  margin: 14px 0;
 }
 .doc-line.w85 { width: 85%; }
 .doc-line.w75 { width: 75%; }
@@ -1775,19 +1771,74 @@
 .doc-line.w50 { width: 50%; }
 .doc-stamp {
   position: absolute;
-  bottom: -12px;
-  right: -14px;
+  bottom: -14px;
+  left: 24px;
   background: var(--red-bg);
   color: var(--red);
   border: 2px solid var(--red);
-  border-radius: 8px;
+  border-radius: 10px;
   font-weight: 800;
-  font-size: 11px;
+  font-size: 13px;
   letter-spacing: 0.5px;
-  padding: 5px 9px;
-  transform: rotate(-9deg);
+  padding: 7px 12px;
+  transform: rotate(-4deg);
+}
+
+/* El cuadro de RIESGO 78 es ahora el pequeño que flota encima */
+.mock-stack .mock-card {
+  position: absolute;
+  z-index: 2;
+  right: -22px;
+  bottom: 4px;
+  width: 200px;
+  max-width: 200px;
+  padding: 14px;
+  border-radius: 14px;
+  transform: rotate(4deg);
+  box-shadow: 0 16px 36px rgba(28, 26, 23, 0.18);
+}
+.mock-stack .mock-card:hover {
+  transform: rotate(0deg);
+}
+.mock-stack .mock-gauge {
+  gap: 7px;
+  padding-bottom: 10px;
+}
+.mock-stack .mock-emoji {
+  font-size: 16px;
+}
+.mock-stack .mock-score {
+  font-size: 23px;
+}
+.mock-stack .mock-score span {
+  font-size: 10px;
+}
+.mock-stack .mock-label {
+  font-size: 9px;
+}
+.mock-stack .mock-clause {
+  margin: 10px 0;
+  padding: 8px 10px;
+  border-left-width: 3px;
+}
+.mock-stack .mock-badge {
+  font-size: 8.5px;
+  padding: 2px 7px;
+  margin-bottom: 5px;
+}
+.mock-stack .mock-clause strong {
+  font-size: 12px;
+}
+.mock-stack .mock-clause p {
+  font-size: 10px;
+  line-height: 1.35;
+}
+.mock-stack .mock-chip {
+  font-size: 10px;
+  padding: 7px;
 }
 @media (max-width: 720px) {
-  .mock-doc { display: none; }
-  .mock-stack { padding: 0; }
+  .mock-stack .mock-card {
+    right: -10px;
+  }
 }
