@@ -1775,8 +1775,8 @@
 .doc-line.w50 { width: 50%; }
 .doc-stamp {
   position: absolute;
-  bottom: -10px;
-  left: -16px;
+  bottom: -30px;
+  left: -52px;
   background: var(--red-bg);
   color: var(--red);
   border: 2px solid var(--red);
@@ -1785,7 +1785,8 @@
   font-size: 10px;
   letter-spacing: 0.4px;
   padding: 5px 9px;
-  transform: rotate(-4deg);
+  transform: rotate(-6deg);
+  box-shadow: 0 8px 20px rgba(28, 26, 23, 0.12);
 }
 
 /* El cuadro de RIESGO 78 es ahora el pequeño que flota encima */
