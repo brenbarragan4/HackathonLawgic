@@ -1,26 +1,31 @@
-:root {
-  --navy: #0f1f3d;
-  --navy-2: #16294d;
-  --head: #16294d;
-  --ink: #1a2233;
-  --muted: #5b6678;
-  --line: #e6e9f0;
-  --bg: #f4f6fb;
-  --card: #ffffff;
-  --soft: #fbfcfe;
-  --topbar: linear-gradient(180deg, #eef3ee 0%, #e6ede7 100%);
-  --topbar-line: #d7e0d8;
-  --ghost: #eef1f7;
-  --brand: #ff914d;
-  --brand-2: #ffb37a;
-  --green: #1f9d63;
-  --green-bg: #e7f6ee;
-  --amber: #d98a00;
-  --amber-bg: #fdf3e0;
-  --red: #d83a4b;
-  --red-bg: #fdebed;
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap');
 
-  font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
+:root {
+  /* Paleta serena y premium: verde salvia + marfil + dorado suave */
+  --navy: #2f3d35;
+  --navy-2: #3a4a40;
+  --head: #2c3a31;
+  --ink: #46514a;
+  --muted: #8a958c;
+  --line: #e6e1d4;
+  --bg: #f4f1e9;
+  --card: #ffffff;
+  --soft: #faf8f1;
+  --topbar: rgba(247, 245, 238, 0.85);
+  --topbar-line: #e4dfd1;
+  --ghost: #ebe7da;
+  --brand: #6f9080;
+  --brand-2: #8fab9d;
+  --gold: #b8986a;
+  --gold-2: #cdb288;
+  --green: #5f8f6e;
+  --green-bg: #e7f0e8;
+  --amber: #bf8a3c;
+  --amber-bg: #f6eedc;
+  --red: #c0594d;
+  --red-bg: #f6e6e2;
+
+  font-family: 'Jost', 'Segoe UI', system-ui, Roboto, sans-serif;
   color: var(--ink);
   background: var(--bg);
   -webkit-font-smoothing: antialiased;
@@ -28,21 +33,32 @@
 }
 
 [data-theme='dark'] {
-  --navy: #14233f;
-  --navy-2: #1b3158;
-  --head: #eaf0f8;
-  --ink: #dde3ec;
-  --muted: #97a3b6;
-  --line: #2a3441;
-  --bg: #0f141c;
-  --card: #1a212c;
-  --soft: #141b24;
-  --topbar: linear-gradient(180deg, #18202b 0%, #131a23 100%);
-  --topbar-line: #2a3441;
-  --ghost: #28313f;
-  --green-bg: #16302420;
-  --amber-bg: #3a2c0e30;
-  --red-bg: #3a1a1f40;
+  --navy: #1d231f;
+  --navy-2: #232b25;
+  --head: #edf1ea;
+  --ink: #d4dbd4;
+  --muted: #97a39a;
+  --line: #2f372f;
+  --bg: #151916;
+  --card: #1e231f;
+  --soft: #191e1a;
+  --topbar: rgba(21, 25, 22, 0.85);
+  --topbar-line: #2c342d;
+  --ghost: #28302a;
+  --brand: #7ea48f;
+  --brand-2: #97b7a7;
+  --gold: #c6a878;
+  --green-bg: #1c2a2030;
+  --amber-bg: #3a2f1530;
+  --red-bg: #3a201c40;
+}
+
+h1,
+h2,
+h3,
+.brand-name {
+  font-family: 'Cormorant Garamond', 'Georgia', serif;
+  letter-spacing: 0.2px;
 }
 
 * {

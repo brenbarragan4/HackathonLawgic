@@ -242,8 +242,7 @@ function App() {
             <span className="brand-by">MILEXLEGAL</span>
           </div>
         </div>
-        <div className="topbar-right no-print">
-          <nav className="mainnav">
+        <nav className="mainnav no-print">
             <button
               className={`mainnav-btn ${vista === 'inicio' ? 'activo' : ''}`}
               onClick={() => irAVista('inicio')}
@@ -268,7 +267,8 @@ function App() {
             >
               Contacto
             </button>
-          </nav>
+        </nav>
+        <div className="topbar-right no-print">
           <button
             className="icon-btn icon-btn--solo"
             onClick={() => setTema(tema === 'dark' ? 'light' : 'dark')}
@@ -624,8 +624,9 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
             Antes de firmar, <span className="hl">entiende lo que firmas</span>.
           </h1>
           <p className="hero-sub">
-            Pega o sube tu contrato y, en segundos, descubre las cláusulas riesgosas explicadas en
-            español simple, qué preguntar antes de firmar y cómo mejorarlo.
+            El auxiliar jurídico con IA que hace el primer barrido de cualquier contrato en segundos:
+            detecta cláusulas riesgosas, qué preguntar y cómo mejorarlo — para que el abogado decida
+            con todo sobre la mesa.
           </p>
           <div className="hero-cta">
             <button className="btn primary grande" onClick={onProbarEjemplo}>
@@ -686,7 +687,8 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         <div className="show-head">
           <h2>Ejemplos de lo que hacemos</h2>
           <p className="show-sub">
-            La IA revisa tu contrato como lo haría un abogado, y te lo explica como un amigo.
+            La IA hace el primer barrido del contrato en segundos, para que el abogado dedique su
+            tiempo al criterio legal. La última palabra siempre es tuya.
           </p>
         </div>
         <div className="guia-grid">
@@ -724,14 +726,15 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         </div>
       </section>
 
-      {/* ---- El problema que resolvemos ---- */}
+      {/* ---- Para qué sirve ---- */}
       <section className="guia-bloque card problema">
-        <h2>🎯 El problema que resolvemos</h2>
+        <h2>🎯 Un auxiliar para el abogado, no un reemplazo</h2>
         <p>
-          Millones de personas firman contratos de renta, trabajo o servicios que no entienden, y
-          aceptan cláusulas abusivas sin darse cuenta. Pagar un abogado para revisar cada documento
-          es caro y lento. <strong>MILEXLEGAL democratiza la revisión legal:</strong> pones tu
-          contrato y, en segundos, sabes a qué te estás comprometiendo.
+          Revisar cada contrato cláusula por cláusula consume horas valiosas del despacho.{' '}
+          <strong>MILEXLEGAL es tu auxiliar jurídico con IA:</strong> hace el primer barrido en
+          segundos —detecta riesgos, los resume y propone mejoras— para que tú, el abogado, dediques
+          tu tiempo al criterio legal, la estrategia y tus clientes. La herramienta apoya tu trabajo;
+          el juicio profesional y la decisión final siempre son tuyos.
         </p>
       </section>
 
@@ -750,6 +753,89 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         abogado.
       </p>
     </main>
+  )
+}
+
+// ---------- Contacto ----------
+function Contacto() {
+  const [enviado, setEnviado] = useState(false)
+
+  function onEnviar(e) {
+    e.preventDefault()
+    const datos = new FormData(e.target)
+    const nombre = encodeURIComponent(datos.get('nombre') || '')
+    const mensaje = encodeURIComponent(datos.get('mensaje') || '')
+    const correo = encodeURIComponent(datos.get('correo') || '')
+    window.location.href = `mailto:contacto@milexlegal.com?subject=Consulta de ${nombre}&body=${mensaje}%0D%0A%0D%0AResponder a: ${correo}`
+    setEnviado(true)
+  }
+
+  const canales = [
+    ['✉️', 'Correo', 'contacto@milexlegal.com', 'mailto:contacto@milexlegal.com'],
+    ['💬', 'WhatsApp', '+52 55 1234 5678', 'https://wa.me/525512345678'],
+    ['📞', 'Teléfono', '+52 55 1234 5678', 'tel:+525512345678'],
+    ['📍', 'Oficina', 'Ciudad de México, México', null],
+  ]
+
+  return (
+    <>
+      <section className="hero">
+        <h1>
+          Hablemos de tu <span className="hl">tranquilidad legal</span>.
+        </h1>
+        <p className="hero-sub">
+          ¿Tienes un contrato delicado o necesitas asesoría personalizada? Escríbenos y un especialista
+          de MILEXLEGAL te responderá a la brevedad.
+        </p>
+      </section>
+
+      <div className="contacto">
+        <div className="contacto-canales">
+          {canales.map(([emoji, titulo, valor, link], i) => (
+            <div key={i} className="contacto-card card">
+              <span className="contacto-emoji">{emoji}</span>
+              <div>
+                <strong>{titulo}</strong>
+                {link ? (
+                  <a href={link} target="_blank" rel="noreferrer">
+                    {valor}
+                  </a>
+                ) : (
+                  <span>{valor}</span>
+                )}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <form className="contacto-form card" onSubmit={onEnviar}>
+          <h2>Envíanos un mensaje</h2>
+          <label>
+            Nombre
+            <input name="nombre" type="text" placeholder="Tu nombre" required />
+          </label>
+          <label>
+            Correo
+            <input name="correo" type="email" placeholder="tucorreo@ejemplo.com" required />
+          </label>
+          <label>
+            Mensaje
+            <textarea name="mensaje" rows="5" placeholder="Cuéntanos cómo podemos ayudarte…" required />
+          </label>
+          <button className="btn primary" type="submit">
+            Enviar mensaje
+          </button>
+          {enviado && (
+            <p className="contacto-ok">✓ ¡Gracias! Se abrió tu correo para enviar el mensaje.</p>
+          )}
+        </form>
+      </div>
+
+      <p className="disclaimer" style={{ textAlign: 'center' }}>
+        MILEXLEGAL ofrece orientación informativa generada por IA y no sustituye la asesoría de un
+        abogado.
+      </p>
+    </>
   )
 }
 
