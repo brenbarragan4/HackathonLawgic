@@ -371,6 +371,24 @@ function App() {
 
             {!resultado && !cargando && (
               <section className="showcase">
+                <div className="stats">
+                  <div className="stat">
+                    <div className="stat-num">6</div>
+                    <div className="stat-label">revisiones en un solo análisis</div>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-num">3</div>
+                    <div className="stat-label">formatos que lee: PDF, Word y texto</div>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-num">2</div>
+                    <div className="stat-label">formas de exportar: PDF y Word</div>
+                  </div>
+                  <div className="stat">
+                    <div className="stat-num">$0</div>
+                    <div className="stat-label">100% gratis, sin registro</div>
+                  </div>
+                </div>
                 <div className="show-head">
                   <h2>Todo esto en un solo análisis</h2>
                   <p className="show-sub">
