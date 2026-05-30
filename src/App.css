@@ -316,6 +316,7 @@
 .landing-visual {
   display: flex;
   justify-content: center;
+  padding-left: 48px;
 }
 
 .mock-card {
@@ -519,6 +520,9 @@
   .mock-card {
     transform: none;
     max-width: 340px;
+  }
+  .landing-visual {
+    padding-left: 0;
   }
 }
 
