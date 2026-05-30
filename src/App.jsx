@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import './App.css'
 import { analizarContrato, generarContratoMejorado } from './lib/gemini'
 import { CONTRATO_EJEMPLO } from './sampleContract'
@@ -51,6 +51,20 @@ function App() {
   const [mejorando, setMejorando] = useState(false)
   const [contratoMejorado, setContratoMejorado] = useState('')
   const [errorMejora, setErrorMejora] = useState('')
+
+  const [tema, setTema] = useState(
+    () => (typeof localStorage !== 'undefined' && localStorage.getItem('tema')) || 'light'
+  )
+  const [vistaGuia, setVistaGuia] = useState(false)
+
+  useEffect(() => {
+    document.documentElement.setAttribute('data-theme', tema)
+    try {
+      localStorage.setItem('tema', tema)
+    } catch {
+      // sin persistencia
+    }
+  }, [tema])
 
   async function onAnalizar() {
     if (!texto.trim()) {
@@ -113,10 +127,25 @@ function App() {
             <span className="brand-by">MILEXLEGAL</span>
           </div>
         </div>
-        <span className="brand-tag">Tu auxiliar jurídico con IA</span>
+        <div className="topbar-right no-print">
+          <span className="brand-tag">Tu auxiliar jurídico con IA</span>
+          <button className="icon-btn" onClick={() => setVistaGuia((v) => !v)}>
+            {vistaGuia ? '← Volver' : '📘 ¿Cómo funciona?'}
+          </button>
+          <button
+            className="icon-btn"
+            onClick={() => setTema(tema === 'dark' ? 'light' : 'dark')}
+            aria-label="Cambiar tema"
+            title="Cambiar entre claro y oscuro"
+          >
+            {tema === 'dark' ? '☀️ Claro' : '🌙 Oscuro'}
+          </button>
+        </div>
       </header>
 
-      <main className="container">
+      {vistaGuia && <Guia onEmpezar={() => setVistaGuia(false)} />}
+
+      <main className="container" hidden={vistaGuia}>
         {!resultado && (
           <section className="hero">
             <h1>
@@ -306,6 +335,92 @@ function App() {
         <p>MILEXLEGAL · Hackathon Claude para abogados · 2026</p>
       </footer>
     </div>
+  )
+}
+
+function Guia({ onEmpezar }) {
+  const features = [
+    ['🚦', 'Nivel de riesgo al firmar', 'Un semáforo y un puntaje de 0 a 100 que te dice qué tan riesgoso es firmar.'],
+    ['🔴', 'Cláusulas riesgosas explicadas', 'Cada cláusula problemática, en español simple, y qué hacer al respecto.'],
+    ['❓', 'Preguntas antes de firmar', 'Las preguntas clave que deberías hacer antes de poner tu firma.'],
+    ['⚖️', 'Tesis y jurisprudencia', 'Temas legales y referencias relacionadas, orientativas, para profundizar.'],
+    ['📄', 'Reporte en PDF', 'Descarga todo el análisis en un PDF para guardarlo o compartirlo.'],
+    ['✍️', 'Contrato mejorado en Word', 'La IA redacta una versión justa y equilibrada, lista para descargar en Word.'],
+  ]
+
+  return (
+    <main className="container guia">
+      <div className="guia-hero">
+        <img className="guia-logo" src="/justicia.png" alt="MILEXLEGAL" />
+        <span className="guia-marca">MILEXLEGAL</span>
+        <h1>Revisa tu Contrato</h1>
+        <p className="guia-lead">
+          Tu auxiliar jurídico con inteligencia artificial. Entiende cualquier contrato antes
+          de firmarlo, descubre sus riesgos y obtén una versión mejorada — en segundos, sin
+          necesidad de ser abogado.
+        </p>
+      </div>
+
+      <div className="guia-bloque card">
+        <h2>🎯 El problema que resolvemos</h2>
+        <p style={{ lineHeight: 1.6, color: 'var(--ink)' }}>
+          Millones de personas firman contratos de renta, trabajo o servicios que no entienden,
+          y aceptan cláusulas abusivas sin darse cuenta. Pagar un abogado para revisar cada
+          documento es caro y lento. <strong>MILEXLEGAL democratiza la revisión legal:</strong>{' '}
+          pones tu contrato y, en segundos, sabes a qué te estás comprometiendo.
+        </p>
+      </div>
+
+      <div className="guia-bloque">
+        <h2>⚙️ Cómo funciona en 3 pasos</h2>
+        <div className="pasos">
+          <div className="paso card">
+            <div className="paso-num">1</div>
+            <h3>Pega tu contrato</h3>
+            <p>Copia y pega el texto de cualquier contrato en la app.</p>
+          </div>
+          <div className="paso card">
+            <div className="paso-num">2</div>
+            <h3>La IA lo analiza</h3>
+            <p>Revisa cada cláusula y detecta riesgos, abusos y vacíos legales.</p>
+          </div>
+          <div className="paso card">
+            <div className="paso-num">3</div>
+            <h3>Recibe tu reporte</h3>
+            <p>Riesgos, preguntas, jurisprudencia y un contrato mejorado en Word.</p>
+          </div>
+        </div>
+      </div>
+
+      <div className="guia-bloque">
+        <h2>✨ Qué obtienes</h2>
+        <div className="guia-grid">
+          {features.map(([emoji, titulo, desc], i) => (
+            <div key={i} className="guia-feature">
+              <span className="emoji">{emoji}</span>
+              <span>
+                <strong>{titulo}</strong>
+                {desc}
+              </span>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      <div className="guia-cta no-print">
+        <button className="btn primary" onClick={onEmpezar}>
+          🚀 Empezar a usar la app
+        </button>
+        <button className="btn ghost" onClick={() => window.print()}>
+          📄 Descargar esta guía (PDF)
+        </button>
+      </div>
+
+      <p className="disclaimer" style={{ textAlign: 'center' }}>
+        MILEXLEGAL ofrece orientación informativa generada por IA y no sustituye la asesoría de
+        un abogado.
+      </p>
+    </main>
   )
 }
 

@@ -11,9 +11,9 @@
   justify-content: space-between;
   gap: 16px;
   padding: 14px 28px;
-  background: linear-gradient(180deg, #eef3ee 0%, #e6ede7 100%);
+  background: var(--topbar);
   color: var(--ink);
-  border-bottom: 1px solid #d7e0d8;
+  border-bottom: 1px solid var(--topbar-line);
   box-shadow: 0 2px 12px rgba(15, 31, 61, 0.04);
   position: sticky;
   top: 0;
@@ -39,7 +39,7 @@
   font-weight: 700;
   font-size: 18px;
   letter-spacing: 0.2px;
-  color: var(--navy);
+  color: var(--head);
 }
 
 .brand-by {
@@ -52,7 +52,29 @@
 
 .brand-tag {
   font-size: 13px;
-  color: #6a7486;
+  color: var(--muted);
+}
+
+.topbar-right {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  border: 1px solid var(--topbar-line);
+  background: rgba(255, 255, 255, 0.35);
+  color: var(--head);
+  border-radius: 10px;
+  padding: 7px 12px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+}
+
+.icon-btn:hover {
+  opacity: 0.8;
 }
 
 /* ---------- Layout ---------- */
@@ -82,7 +104,7 @@
   font-size: 38px;
   line-height: 1.15;
   margin: 0 0 14px;
-  color: var(--navy);
+  color: var(--head);
   letter-spacing: -0.5px;
 }
 
@@ -112,7 +134,7 @@
 .veredicto-texto h2 {
   font-size: 18px;
   margin: 0;
-  color: var(--navy);
+  color: var(--head);
 }
 
 .editor-actions {
@@ -130,7 +152,7 @@
   font-size: 15px;
   line-height: 1.55;
   color: var(--ink);
-  background: #fbfcfe;
+  background: var(--soft);
   font-family: inherit;
 }
 
@@ -182,12 +204,12 @@
 }
 
 .btn.ghost {
-  background: #eef1f7;
-  color: var(--navy);
+  background: var(--ghost);
+  color: var(--head);
 }
 
 .btn.ghost:hover:not(:disabled) {
-  background: #e2e7f1;
+  opacity: 0.85;
 }
 
 .btn.verde {
@@ -277,7 +299,7 @@
 .gauge-score {
   font-size: 40px;
   font-weight: 800;
-  color: var(--navy);
+  color: var(--head);
   line-height: 1;
 }
 
@@ -364,7 +386,7 @@
 .clausula-head h3 {
   margin: 0;
   font-size: 17px;
-  color: var(--navy);
+  color: var(--head);
 }
 
 .badge {
@@ -396,7 +418,7 @@
 
 .clausula-rec {
   margin: 0;
-  background: #f7f9fc;
+  background: var(--soft);
   border-radius: 10px;
   padding: 10px 12px;
   font-size: 14px;
@@ -405,7 +427,7 @@
 }
 
 .clausula-rec strong {
-  color: var(--navy);
+  color: var(--head);
 }
 
 /* ---------- Listas extra ---------- */
@@ -426,8 +448,9 @@
 }
 
 .lista-extra.preguntas {
-  background: #eef4fb;
-  border-color: #cfe0f3;
+  background: var(--soft);
+  border-color: var(--line);
+  border-left: 4px solid #3f7bd0;
 }
 
 /* ---------- Jurisprudencia ---------- */
@@ -446,15 +469,15 @@
 .juris-item h4 {
   margin: 0 0 4px;
   font-size: 15px;
-  color: var(--navy);
+  color: var(--head);
 }
 
 .juris-ref {
   display: inline-block;
   font-family: var(--mono, monospace);
   font-size: 12px;
-  background: #eef1f7;
-  color: #44506a;
+  background: var(--ghost);
+  color: var(--muted);
   padding: 2px 8px;
   border-radius: 6px;
   margin-bottom: 6px;
@@ -496,7 +519,7 @@
   font-size: 14px;
   line-height: 1.6;
   color: var(--ink);
-  background: #fbfcfa;
+  background: var(--soft);
   border: 1px solid var(--line);
   border-radius: 12px;
   padding: 18px;
@@ -530,6 +553,139 @@
   border-top: 1px solid var(--line);
 }
 
+/* ---------- Guía / ¿Cómo funciona? ---------- */
+.guia {
+  animation: fade 0.3s ease;
+}
+
+.guia-hero {
+  text-align: center;
+  padding: 20px 0 10px;
+}
+
+.guia-logo {
+  height: 84px;
+  width: auto;
+  filter: drop-shadow(0 4px 10px rgba(47, 125, 87, 0.25));
+}
+
+.guia-hero h1 {
+  font-size: 34px;
+  color: var(--head);
+  margin: 14px 0 8px;
+  letter-spacing: -0.5px;
+}
+
+.guia-hero .guia-marca {
+  color: #2f7d57;
+  font-weight: 700;
+  letter-spacing: 1px;
+  font-size: 14px;
+}
+
+.guia-lead {
+  font-size: 17px;
+  color: var(--muted);
+  max-width: 620px;
+  margin: 12px auto 0;
+  line-height: 1.55;
+}
+
+.guia-bloque {
+  margin-top: 18px;
+}
+
+.guia-bloque h2 {
+  font-size: 19px;
+  color: var(--head);
+  margin: 0 0 12px;
+}
+
+.pasos {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.paso {
+  text-align: center;
+}
+
+.paso-num {
+  width: 40px;
+  height: 40px;
+  margin: 0 auto 10px;
+  border-radius: 50%;
+  background: var(--brand);
+  color: #fff;
+  font-weight: 800;
+  font-size: 18px;
+  display: grid;
+  place-items: center;
+}
+
+.paso h3 {
+  font-size: 16px;
+  color: var(--head);
+  margin: 0 0 6px;
+}
+
+.paso p {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+
+.guia-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.guia-feature {
+  display: flex;
+  gap: 10px;
+  align-items: flex-start;
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 14px;
+}
+
+.guia-feature .emoji {
+  font-size: 20px;
+  line-height: 1.2;
+}
+
+.guia-feature strong {
+  color: var(--head);
+  display: block;
+  margin-bottom: 2px;
+  font-size: 15px;
+}
+
+.guia-feature span {
+  color: var(--muted);
+  font-size: 13.5px;
+  line-height: 1.45;
+}
+
+.guia-cta {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+  justify-content: center;
+  margin: 26px 0 10px;
+}
+
+@media (max-width: 560px) {
+  .pasos,
+  .guia-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
 /* ---------- Responsive ---------- */
 @media (max-width: 560px) {
   .hero h1 {
@@ -556,15 +712,34 @@
   .footer {
     display: none !important;
   }
+  html,
   body {
-    background: #fff;
+    background: #fff !important;
+    color: #1a2233 !important;
+  }
+  .container {
+    max-width: 100%;
   }
   .card {
     box-shadow: none;
     border: 1px solid #ccc;
     break-inside: avoid;
+    background: #fff !important;
   }
-  .container {
-    max-width: 100%;
+  h1,
+  h2,
+  h3,
+  h4,
+  p,
+  li,
+  span,
+  strong,
+  .gauge-score {
+    color: #1a2233 !important;
+  }
+  .clausula-rec,
+  .guia-feature,
+  .mejorado-texto {
+    background: #f6f7fa !important;
   }
 }
