@@ -282,7 +282,7 @@ function App() {
 
       {/* ===================== INICIO (portada + ejemplos + cómo funciona) ===================== */}
       {vista === 'inicio' && (
-        <Inicio onProbarEjemplo={onProbarEjemplo} onIrServicios={() => irAServicios('analizar')} />
+        <Inicio onProbarEjemplo={onProbarEjemplo} onIrServicios={irAServicios} />
       )}
 
       <main className="container" hidden={vista !== 'servicios'}>
@@ -632,7 +632,7 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
             <button className="btn primary grande" onClick={onProbarEjemplo}>
               ▶️ Ver un análisis de ejemplo
             </button>
-            <button className="btn ghost grande" onClick={onIrServicios}>
+            <button className="btn ghost grande" onClick={() => onIrServicios('analizar')}>
               📎 Subir mi contrato
             </button>
           </div>
@@ -662,6 +662,67 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         </div>
       </section>
 
+      {/* ---- Qué ofrecemos: 2 servicios principales, en forma de imagen ---- */}
+      <section className="servicios-destacados">
+        <div className="show-head">
+          <h2>Esto es lo que hacemos por ti</h2>
+          <p className="show-sub">
+            Dos formas de ayudarte con tus contratos. Elige la que necesitas hoy.
+          </p>
+        </div>
+
+        <div className="serv-cards">
+          {/* Servicio 1: Analizar */}
+          <article className="serv-card">
+            <div className="serv-visual serv-visual--analizar" aria-hidden="true">
+              <div className="serv-doc">
+                <span className="serv-doc-line" />
+                <span className="serv-doc-line short" />
+                <span className="serv-doc-line" />
+                <span className="serv-doc-line short" />
+                <span className="serv-doc-flag">🔴 Cláusula riesgosa</span>
+              </div>
+              <div className="serv-lupa">🔍</div>
+            </div>
+            <div className="serv-body">
+              <span className="serv-tag">Servicio 01</span>
+              <h3>Analizamos tu contrato</h3>
+              <p>
+                Sube un contrato en PDF, Word o texto y la IA lo revisa cláusula por cláusula:
+                detecta riesgos, te dice qué preguntar y te da una versión mejorada.
+              </p>
+              <button className="btn primary" onClick={() => onIrServicios('analizar')}>
+                🔍 Analizar un contrato
+              </button>
+            </div>
+          </article>
+
+          {/* Servicio 2: Crear */}
+          <article className="serv-card">
+            <div className="serv-visual serv-visual--crear" aria-hidden="true">
+              <div className="serv-doc">
+                <span className="serv-doc-line" />
+                <span className="serv-doc-line" />
+                <span className="serv-doc-line short" />
+                <span className="serv-doc-cursor" />
+              </div>
+              <div className="serv-mic">🎤</div>
+            </div>
+            <div className="serv-body">
+              <span className="serv-tag">Servicio 02</span>
+              <h3>Creamos tu contrato</h3>
+              <p>
+                Describe (escribiendo o por voz) el contrato que necesitas y la IA lo redacta
+                completo, listo para descargar en Word y editar.
+              </p>
+              <button className="btn primary" onClick={() => onIrServicios('crear')}>
+                ✍️ Crear un contrato
+              </button>
+            </div>
+          </article>
+        </div>
+      </section>
+
       {/* ---- Números ---- */}
       <section className="stats">
         <div className="stat">
@@ -675,10 +736,6 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         <div className="stat">
           <div className="stat-num">2</div>
           <div className="stat-label">formas de exportar: PDF y Word</div>
-        </div>
-        <div className="stat">
-          <div className="stat-num">$0</div>
-          <div className="stat-label">100% gratis, sin registro</div>
         </div>
       </section>
 
