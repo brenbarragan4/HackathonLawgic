@@ -690,9 +690,6 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
                 Sube un contrato en PDF, Word o texto y la IA lo revisa cláusula por cláusula:
                 detecta riesgos, te dice qué preguntar y te da una versión mejorada.
               </p>
-              <button className="btn primary" onClick={() => onIrServicios('analizar')}>
-                🔍 Analizar un contrato
-              </button>
             </div>
           </article>
 
@@ -714,9 +711,6 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
                 Describe (escribiendo o por voz) el contrato que necesitas y la IA lo redacta
                 completo, listo para descargar en Word y editar.
               </p>
-              <button className="btn primary" onClick={() => onIrServicios('crear')}>
-                ✍️ Crear un contrato
-              </button>
             </div>
           </article>
         </div>
