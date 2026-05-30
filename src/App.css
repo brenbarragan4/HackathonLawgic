@@ -234,10 +234,9 @@
   color: var(--muted);
   max-width: 620px;
   margin: 0 auto;
-  line-height: 1.5;
-  text-align: justify;
-  text-align-last: center;
-  hyphens: auto;
+  line-height: 1.55;
+  text-align: center;
+  hyphens: manual;
 }
 
 /* ---------- Landing (portada que vende) ---------- */
