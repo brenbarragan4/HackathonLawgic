@@ -839,9 +839,6 @@ function Contacto() {
 
   const canales = [
     ['✉️', 'Correo', 'contacto@milexlegal.com', 'mailto:contacto@milexlegal.com'],
-    ['💬', 'WhatsApp', '+52 55 1234 5678', 'https://wa.me/525512345678'],
-    ['📞', 'Teléfono', '+52 55 1234 5678', 'tel:+525512345678'],
-    ['📍', 'Oficina', 'Ciudad de México, México', null],
   ]
 
   return (
