@@ -628,14 +628,6 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
             detecta cláusulas riesgosas, qué preguntar y cómo mejorarlo — para que el abogado decida
             con todo sobre la mesa.
           </p>
-          <div className="hero-cta">
-            <button className="btn primary grande" onClick={onProbarEjemplo}>
-              ▶️ Ver un análisis de ejemplo
-            </button>
-            <button className="btn ghost grande" onClick={() => onIrServicios('analizar')}>
-              📎 Subir mi contrato
-            </button>
-          </div>
           <div className="hero-trust">
             <span>✓ En segundos</span>
             <span>✓ PDF y Word</span>
@@ -644,20 +636,32 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         </div>
 
         <div className="landing-visual" aria-hidden="true">
-          <div className="mock-card">
-            <div className="mock-gauge">
-              <div className="mock-emoji">🔴</div>
-              <div className="mock-score">
-                78<span>/100</span>
+          <div className="mock-stack">
+            <div className="mock-doc">
+              <span className="doc-tag">CONTRATO</span>
+              <span className="doc-line w85" />
+              <span className="doc-line" />
+              <span className="doc-line w60" />
+              <span className="doc-line" />
+              <span className="doc-line w75" />
+              <span className="doc-line w50" />
+              <span className="doc-stamp">⚠️ RIESGO ALTO</span>
+            </div>
+            <div className="mock-card">
+              <div className="mock-gauge">
+                <div className="mock-emoji">🔴</div>
+                <div className="mock-score">
+                  78<span>/100</span>
+                </div>
+                <div className="mock-label">Riesgo alto al firmar</div>
               </div>
-              <div className="mock-label">Riesgo alto al firmar</div>
+              <div className="mock-clause">
+                <span className="mock-badge">🔴 Riesgo alto</span>
+                <strong>Depósito no reembolsable</strong>
+                <p>Pierdes tu depósito aunque entregues el inmueble en buen estado.</p>
+              </div>
+              <div className="mock-chip">✍️ Contrato mejorado listo en Word</div>
             </div>
-            <div className="mock-clause">
-              <span className="mock-badge">🔴 Riesgo alto</span>
-              <strong>Depósito no reembolsable</strong>
-              <p>Pierdes tu depósito aunque entregues el inmueble en buen estado.</p>
-            </div>
-            <div className="mock-chip">✍️ Contrato mejorado listo en Word</div>
           </div>
         </div>
       </section>
