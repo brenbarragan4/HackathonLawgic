@@ -235,11 +235,12 @@ function App() {
             {vistaGuia ? '← Volver' : '📘 ¿Cómo funciona?'}
           </button>
           <button
-            className="icon-btn"
+            className="icon-btn icon-btn--solo"
             onClick={() => setTema(tema === 'dark' ? 'light' : 'dark')}
             title="Cambiar entre claro y oscuro"
+            aria-label="Cambiar entre modo claro y oscuro"
           >
-            {tema === 'dark' ? '☀️ Claro' : '🌙 Oscuro'}
+            {tema === 'dark' ? '☀️' : '🌙'}
           </button>
         </div>
       </header>

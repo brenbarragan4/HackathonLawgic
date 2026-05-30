@@ -84,6 +84,16 @@
   background: rgba(255, 255, 255, 0.4);
 }
 
+/* Botón solo con ícono (modo claro/oscuro) */
+.icon-btn--solo {
+  justify-content: center;
+  padding: 0;
+  width: 34px;
+  height: 34px;
+  font-size: 15px;
+  border-radius: 10px;
+}
+
 /* ---------- Layout ---------- */
 .container {
   width: 100%;
