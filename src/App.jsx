@@ -809,8 +809,9 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         <p>
           Revisar cada contrato cláusula por cláusula consume horas valiosas del despacho.{' '}
           <strong>MILEXLEGAL es tu auxiliar jurídico con IA:</strong> hace el primer barrido en
-          segundos —detecta riesgos, los resume y propone mejoras— para que tú, el abogado, dediques
-          tu tiempo al criterio legal, la estrategia y tus clientes. La herramienta apoya tu trabajo;
+          segundos&nbsp;—detecta riesgos, los resume y propone mejoras—&nbsp;para que tú, el abogado,
+          dediques tu tiempo al criterio legal, la estrategia y tus clientes. La herramienta apoya tu
+          trabajo;
           el juicio profesional y la decisión final siempre son tuyos.
         </p>
       </section>
