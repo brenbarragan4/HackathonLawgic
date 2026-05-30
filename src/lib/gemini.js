@@ -29,6 +29,19 @@ const responseSchema = {
     },
     puntosAFavor: { type: 'ARRAY', items: { type: 'STRING' } },
     clausulasFaltantes: { type: 'ARRAY', items: { type: 'STRING' } },
+    preguntasAntesDeFirmar: { type: 'ARRAY', items: { type: 'STRING' } },
+    jurisprudencia: {
+      type: 'ARRAY',
+      items: {
+        type: 'OBJECT',
+        properties: {
+          tema: { type: 'STRING' },
+          referencia: { type: 'STRING' },
+          relacion: { type: 'STRING' },
+        },
+        required: ['tema', 'relacion'],
+      },
+    },
   },
   required: ['resumen', 'nivelRiesgoGlobal', 'puntajeRiesgo', 'clausulas'],
 }
@@ -51,8 +64,13 @@ También:
 - "tipoContrato": qué tipo de contrato es (arrendamiento, laboral, compraventa, etc.).
 - "puntosAFavor": cosas que SÍ protegen a quien firma (puede estar vacío).
 - "clausulasFaltantes": protecciones importantes que el contrato DEBERÍA tener pero no tiene.
+- "preguntasAntesDeFirmar": 4 a 6 preguntas concretas y útiles que la persona DEBERÍA hacer (al arrendador, empleador, vendedor, etc.) antes de firmar este contrato.
+- "jurisprudencia": de 2 a 4 elementos con el área del derecho, principios legales o tipos de tesis/jurisprudencia mexicana RELACIONADOS con los riesgos detectados. Para cada uno:
+    - "tema": el principio o tema legal (ej. "Cláusulas abusivas en contratos de adhesión").
+    - "referencia": si conoces una tesis/jurisprudencia, ley o artículo aplicable, menciónalo de forma general (ej. "Código Civil Federal, arts. 2406-2447" o "Tesis sobre lesión en contratos"). Si NO estás seguro de una cita exacta, deja este campo vacío o pon "Verificar con un abogado". NUNCA inventes números de registro o datos de tesis que no conozcas con certeza.
+    - "relacion": en 1-2 frases, cómo se relaciona ese tema con el contrato analizado.
 
-Sé honesto y prudente. Recuerda que esto es orientación informativa, no asesoría legal formal.`
+Sé honesto y prudente. La sección de jurisprudencia es ORIENTATIVA y siempre debe verificarse con un abogado. Recuerda que esto es orientación informativa, no asesoría legal formal.`
 
 export async function analizarContrato(textoContrato) {
   if (!API_KEY) {
@@ -113,4 +131,70 @@ export async function analizarContrato(textoContrato) {
   } catch {
     throw new Error('No se pudo leer la respuesta de la IA. Intenta de nuevo.')
   }
+}
+
+const INSTRUCCIONES_MEJORA = `Eres un abogado experto en redacción de contratos en México.
+Te dan un contrato que puede tener cláusulas abusivas, desventajosas o desequilibradas.
+
+Tu tarea: reescribir el contrato en una versión MEJORADA, JUSTA y EQUILIBRADA para ambas partes, que:
+- Corrija o suavice las cláusulas abusivas.
+- Proteja a la parte más débil sin perjudicar injustamente a la otra.
+- Agregue las cláusulas de protección importantes que falten (depósito reembolsable razonable, condiciones claras de terminación, plazos justos, etc.).
+- Use lenguaje claro y profesional.
+
+Devuelve SOLO el texto del contrato mejorado, bien estructurado:
+- Un título en la primera línea.
+- Cláusulas numeradas con ordinales (PRIMERA., SEGUNDA., TERCERA., ...).
+- Espacios para datos con líneas: ____________.
+- Al final, líneas para las firmas de ambas partes.
+
+No agregues explicaciones, comentarios ni notas fuera del contrato. Solo el documento listo para usar. En español.`
+
+export async function generarContratoMejorado(textoContrato) {
+  if (!API_KEY) {
+    throw new Error(
+      'No se encontró la llave de Gemini. Revisa que VITE_GEMINI_API_KEY esté en el archivo .env.local y reinicia el servidor.'
+    )
+  }
+
+  const body = {
+    contents: [
+      {
+        parts: [
+          { text: INSTRUCCIONES_MEJORA },
+          { text: '\n\n=== CONTRATO ORIGINAL ===\n\n' + textoContrato },
+        ],
+      },
+    ],
+    generationConfig: { temperature: 0.4 },
+  }
+
+  let res
+  try {
+    res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+  } catch {
+    throw new Error('No se pudo conectar con Gemini. Revisa tu conexión a internet.')
+  }
+
+  if (!res.ok) {
+    let detalle = ''
+    try {
+      const err = await res.json()
+      detalle = err?.error?.message || ''
+    } catch {
+      // sin detalle
+    }
+    throw new Error(`Gemini respondió con un error (${res.status}). ${detalle}`)
+  }
+
+  const data = await res.json()
+  const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text
+  if (!texto) {
+    throw new Error('Gemini no devolvió un contrato. Intenta de nuevo.')
+  }
+  return texto.trim()
 }

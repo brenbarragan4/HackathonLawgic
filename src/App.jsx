@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import './App.css'
-import { analizarContrato } from './lib/gemini'
+import { analizarContrato, generarContratoMejorado } from './lib/gemini'
 import { CONTRATO_EJEMPLO } from './sampleContract'
 
 const NIVEL_INFO = {
@@ -9,11 +9,48 @@ const NIVEL_INFO = {
   bajo: { etiqueta: 'Riesgo bajo', color: 'verde', emoji: '🟢' },
 }
 
+function escaparHtml(t) {
+  return t
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+}
+
+// Genera y descarga un archivo .doc (lo abre Word) a partir de texto plano.
+function descargarWord(texto) {
+  const cuerpo = texto
+    .split('\n')
+    .map((linea) =>
+      linea.trim() ? `<p>${escaparHtml(linea)}</p>` : '<p>&nbsp;</p>'
+    )
+    .join('')
+
+  const html = `<!DOCTYPE html>
+<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40">
+<head><meta charset="utf-8"><title>Contrato mejorado</title></head>
+<body style="font-family:'Times New Roman',serif;font-size:12pt;line-height:1.5;">${cuerpo}</body>
+</html>`
+
+  const blob = new Blob(['﻿', html], { type: 'application/msword' })
+  const url = URL.createObjectURL(blob)
+  const a = document.createElement('a')
+  a.href = url
+  a.download = 'contrato-mejorado.doc'
+  document.body.appendChild(a)
+  a.click()
+  document.body.removeChild(a)
+  URL.revokeObjectURL(url)
+}
+
 function App() {
   const [texto, setTexto] = useState('')
   const [cargando, setCargando] = useState(false)
   const [error, setError] = useState('')
   const [resultado, setResultado] = useState(null)
+
+  const [mejorando, setMejorando] = useState(false)
+  const [contratoMejorado, setContratoMejorado] = useState('')
+  const [errorMejora, setErrorMejora] = useState('')
 
   async function onAnalizar() {
     if (!texto.trim()) {
@@ -22,6 +59,8 @@ function App() {
     }
     setError('')
     setResultado(null)
+    setContratoMejorado('')
+    setErrorMejora('')
     setCargando(true)
     try {
       const data = await analizarContrato(texto)
@@ -33,16 +72,33 @@ function App() {
     }
   }
 
+  async function onMejorar() {
+    setErrorMejora('')
+    setContratoMejorado('')
+    setMejorando(true)
+    try {
+      const mejorado = await generarContratoMejorado(texto)
+      setContratoMejorado(mejorado)
+    } catch (e) {
+      setErrorMejora(e.message || 'No se pudo generar el contrato mejorado.')
+    } finally {
+      setMejorando(false)
+    }
+  }
+
   function onEjemplo() {
     setTexto(CONTRATO_EJEMPLO)
     setError('')
     setResultado(null)
+    setContratoMejorado('')
   }
 
   function onLimpiar() {
     setTexto('')
     setError('')
     setResultado(null)
+    setContratoMejorado('')
+    setErrorMejora('')
   }
 
   const nivelGlobal = resultado ? NIVEL_INFO[resultado.nivelRiesgoGlobal] || NIVEL_INFO.medio : null
@@ -68,7 +124,8 @@ function App() {
             </h1>
             <p className="hero-sub">
               Pega cualquier contrato y la inteligencia artificial te dirá, en español
-              sencillo, qué cláusulas son riesgosas y por qué — en segundos.
+              sencillo, qué cláusulas son riesgosas, qué preguntar antes de firmar y cómo
+              mejorarlo — en segundos.
             </p>
           </section>
         )}
@@ -116,7 +173,7 @@ function App() {
               <div className="veredicto-gauge">
                 <div className="gauge-emoji">{nivelGlobal.emoji}</div>
                 <div className="gauge-score">{resultado.puntajeRiesgo}<span>/100</span></div>
-                <div className="gauge-label">{nivelGlobal.etiqueta}</div>
+                <div className="gauge-label">{nivelGlobal.etiqueta} al firmar</div>
               </div>
               <div className="veredicto-texto">
                 {resultado.tipoContrato && (
@@ -152,6 +209,36 @@ function App() {
               })}
             </div>
 
+            {resultado.preguntasAntesDeFirmar?.length > 0 && (
+              <div className="lista-extra card preguntas">
+                <h2>❓ Preguntas que deberías hacer antes de firmar</h2>
+                <ul>
+                  {resultado.preguntasAntesDeFirmar.map((p, i) => (
+                    <li key={i}>{p}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {resultado.jurisprudencia?.length > 0 && (
+              <div className="lista-extra card juris">
+                <h2>⚖️ Tesis y jurisprudencia relacionada</h2>
+                <div className="juris-list">
+                  {resultado.jurisprudencia.map((j, i) => (
+                    <div key={i} className="juris-item">
+                      <h4>{j.tema}</h4>
+                      {j.referencia && <span className="juris-ref">{j.referencia}</span>}
+                      <p>{j.relacion}</p>
+                    </div>
+                  ))}
+                </div>
+                <p className="juris-nota">
+                  Esta sección es orientativa y generada por IA. Verifica siempre las citas
+                  con un abogado antes de usarlas.
+                </p>
+              </div>
+            )}
+
             {resultado.clausulasFaltantes?.length > 0 && (
               <div className="lista-extra card">
                 <h2>🛡️ Protecciones que faltan</h2>
@@ -176,12 +263,36 @@ function App() {
 
             <div className="acciones-finales no-print">
               <button className="btn primary" onClick={() => window.print()}>
-                📄 Descargar reporte (PDF)
+                📄 Descargar análisis (PDF)
+              </button>
+              <button className="btn verde" onClick={onMejorar} disabled={mejorando}>
+                {mejorando ? 'Creando…' : '✍️ Crear contrato mejorado (Word)'}
               </button>
               <button className="btn ghost" onClick={onLimpiar}>
                 Analizar otro contrato
               </button>
             </div>
+
+            {errorMejora && <p className="error no-print">⚠️ {errorMejora}</p>}
+
+            {mejorando && (
+              <div className="loading card no-print">
+                <div className="spinner" />
+                <p>Redactando una versión justa y equilibrada de tu contrato…</p>
+              </div>
+            )}
+
+            {contratoMejorado && (
+              <div className="mejorado card no-print">
+                <div className="mejorado-head">
+                  <h2>✨ Contrato mejorado por IA</h2>
+                  <button className="btn primary" onClick={() => descargarWord(contratoMejorado)}>
+                    ⬇️ Descargar en Word
+                  </button>
+                </div>
+                <pre className="mejorado-texto">{contratoMejorado}</pre>
+              </div>
+            )}
 
             <p className="disclaimer">
               Esta herramienta da orientación informativa generada por IA y no sustituye la
