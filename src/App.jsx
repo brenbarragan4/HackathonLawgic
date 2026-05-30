@@ -51,7 +51,7 @@ function App() {
     <div className="app">
       <header className="topbar">
         <div className="brand">
-          <img className="brand-mark" src="/justicia.svg" alt="MILEXLEGAL" />
+          <img className="brand-mark" src="/justicia.png" alt="MILEXLEGAL" />
           <div>
             <span className="brand-name">Revisa tu Contrato</span>
             <span className="brand-by">MILEXLEGAL</span>
