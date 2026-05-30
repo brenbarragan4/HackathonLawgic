@@ -30,11 +30,11 @@
 }
 
 .brand-mark {
-  height: 52px;
+  height: 48px;
   width: auto;
   object-fit: contain;
   display: block;
-  filter: drop-shadow(0 2px 5px rgba(47, 125, 87, 0.25));
+  filter: drop-shadow(0 1px 3px rgba(28, 26, 23, 0.18));
 }
 
 .brand-name {
@@ -142,9 +142,9 @@
 .card {
   background: var(--card);
   border: 1px solid var(--line);
-  border-radius: 16px;
-  padding: 22px;
-  box-shadow: 0 6px 20px rgba(15, 31, 61, 0.05);
+  border-radius: 14px;
+  padding: 24px;
+  box-shadow: 0 1px 2px rgba(28, 26, 23, 0.03);
 }
 
 /* ---------- Selector de modo ---------- */
@@ -179,9 +179,9 @@
 
 /* ---------- Micrófono ---------- */
 .btn.mic {
-  background: #eef4fb;
-  color: #2b5fa0;
-  border: 1px solid #cfe0f3;
+  background: var(--soft);
+  color: var(--head);
+  border: 1.5px solid var(--line);
 }
 
 .btn.mic.activo {
@@ -255,13 +255,16 @@
 
 .badge-ia {
   display: inline-block;
-  background: var(--green-bg);
-  color: var(--green);
-  font-weight: 700;
-  font-size: 13px;
+  background: transparent;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  font-weight: 500;
+  font-size: 12px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
   padding: 6px 14px;
   border-radius: 999px;
-  margin-bottom: 16px;
+  margin-bottom: 18px;
 }
 
 .landing-text h1 {
@@ -322,7 +325,7 @@
   padding: 20px;
   width: 100%;
   max-width: 360px;
-  box-shadow: 0 24px 50px rgba(15, 31, 61, 0.16);
+  box-shadow: 0 20px 48px rgba(28, 26, 23, 0.12);
   transform: rotate(1.4deg);
   transition: transform 0.3s ease;
 }
@@ -558,7 +561,7 @@
 .editor-text:focus {
   outline: none;
   border-color: var(--brand);
-  box-shadow: 0 0 0 3px rgba(255, 145, 77, 0.18);
+  box-shadow: 0 0 0 3px rgba(111, 144, 128, 0.22);
 }
 
 .editor-foot {
@@ -595,29 +598,32 @@
 
 .btn.primary {
   background: var(--brand);
-  color: #fff;
+  color: var(--on-brand);
 }
 
 .btn.primary:hover:not(:disabled) {
-  background: #f97c2e;
+  background: var(--brand-2);
 }
 
 .btn.ghost {
-  background: var(--ghost);
+  background: transparent;
   color: var(--head);
+  border: 1.5px solid var(--line);
 }
 
 .btn.ghost:hover:not(:disabled) {
-  opacity: 0.85;
+  border-color: var(--head);
 }
 
 .btn.verde {
-  background: #2f7d57;
-  color: #fff;
+  background: transparent;
+  color: var(--head);
+  border: 1.5px solid var(--head);
 }
 
 .btn.verde:hover:not(:disabled) {
-  background: #276a49;
+  background: var(--head);
+  color: var(--on-brand);
 }
 
 .error {
@@ -843,13 +849,13 @@
 
 .lista-extra.afavor {
   background: var(--green-bg);
-  border-color: #bfe6cf;
+  border-color: var(--line);
 }
 
 .lista-extra.preguntas {
   background: var(--soft);
   border-color: var(--line);
-  border-left: 4px solid #3f7bd0;
+  border-left: 4px solid var(--head);
 }
 
 /* ---------- Jurisprudencia ---------- */
@@ -900,7 +906,7 @@
 /* ---------- Contrato mejorado ---------- */
 .mejorado {
   margin-top: 18px;
-  border: 2px solid #bfe6cf;
+  border: 1.5px solid var(--head);
 }
 
 .mejorado-head {
@@ -976,10 +982,11 @@
 }
 
 .guia-hero .guia-marca {
-  color: #2f7d57;
-  font-weight: 700;
-  letter-spacing: 1px;
-  font-size: 14px;
+  color: var(--gold);
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-size: 13px;
 }
 
 .guia-lead {
@@ -1187,7 +1194,7 @@
 .calc-op.activo {
   border-color: var(--brand);
   background: var(--card);
-  box-shadow: 0 2px 10px rgba(255, 145, 77, 0.15);
+  box-shadow: 0 2px 10px rgba(111, 144, 128, 0.18);
 }
 
 .calc-op-top {

@@ -1,29 +1,30 @@
 @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=Jost:wght@300;400;500;600&display=swap');
 
 :root {
-  /* Paleta serena y premium: verde salvia + marfil + dorado suave */
-  --navy: #2f3d35;
-  --navy-2: #3a4a40;
-  --head: #2c3a31;
-  --ink: #46514a;
-  --muted: #8a958c;
-  --line: #e6e1d4;
-  --bg: #f4f1e9;
+  /* Paleta minimalista monocromática: negro cálido sobre blanco */
+  --navy: #1c1a17;
+  --navy-2: #2a2722;
+  --head: #1c1a17;
+  --ink: #34312c;
+  --muted: #6d685f;
+  --line: #e7e3db;
+  --bg: #fdfcfa;
   --card: #ffffff;
-  --soft: #faf8f1;
-  --topbar: rgba(247, 245, 238, 0.85);
-  --topbar-line: #e4dfd1;
-  --ghost: #ebe7da;
-  --brand: #6f9080;
-  --brand-2: #8fab9d;
-  --gold: #b8986a;
-  --gold-2: #cdb288;
-  --green: #5f8f6e;
-  --green-bg: #e7f0e8;
-  --amber: #bf8a3c;
-  --amber-bg: #f6eedc;
-  --red: #c0594d;
-  --red-bg: #f6e6e2;
+  --soft: #f6f4ef;
+  --topbar: rgba(253, 252, 250, 0.82);
+  --topbar-line: #ebe7df;
+  --ghost: #f0ede6;
+  --brand: #1c1a17;
+  --brand-2: #3a352e;
+  --on-brand: #fdfcfa;
+  --gold: #8c857a;
+  --gold-2: #a39c90;
+  --green: #4f7a5e;
+  --green-bg: #eef2ed;
+  --amber: #9c7a3f;
+  --amber-bg: #f4efe4;
+  --red: #b0524a;
+  --red-bg: #f4e8e5;
 
   font-family: 'Jost', 'Segoe UI', system-ui, Roboto, sans-serif;
   color: var(--ink);
@@ -33,24 +34,29 @@
 }
 
 [data-theme='dark'] {
-  --navy: #1d231f;
-  --navy-2: #232b25;
-  --head: #edf1ea;
-  --ink: #d4dbd4;
-  --muted: #97a39a;
-  --line: #2f372f;
-  --bg: #151916;
-  --card: #1e231f;
-  --soft: #191e1a;
-  --topbar: rgba(21, 25, 22, 0.85);
-  --topbar-line: #2c342d;
-  --ghost: #28302a;
-  --brand: #7ea48f;
-  --brand-2: #97b7a7;
-  --gold: #c6a878;
-  --green-bg: #1c2a2030;
-  --amber-bg: #3a2f1530;
-  --red-bg: #3a201c40;
+  --navy: #f3f1ec;
+  --navy-2: #e4e1d9;
+  --head: #f3f1ec;
+  --ink: #d6d2c9;
+  --muted: #948e83;
+  --line: #2b2824;
+  --bg: #131210;
+  --card: #1b1916;
+  --soft: #171511;
+  --topbar: rgba(19, 18, 16, 0.82);
+  --topbar-line: #2a2622;
+  --ghost: #242019;
+  --brand: #f3f1ec;
+  --brand-2: #ffffff;
+  --on-brand: #161310;
+  --gold: #9c958a;
+  --gold-2: #b3aca0;
+  --green: #7ba387;
+  --green-bg: #1b261d;
+  --amber: #c2a061;
+  --amber-bg: #2e2614;
+  --red: #d08178;
+  --red-bg: #2e1c19;
 }
 
 h1,
