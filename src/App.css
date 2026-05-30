@@ -39,9 +39,9 @@
 
 .brand-name {
   display: block;
-  font-weight: 700;
-  font-size: 18px;
-  letter-spacing: 0.2px;
+  font-weight: 600;
+  font-size: 20px;
+  letter-spacing: 0.5px;
   color: var(--head);
 }
 
@@ -211,13 +211,14 @@
 /* ---------- Hero ---------- */
 .hero {
   text-align: center;
-  margin: 14px 0 26px;
+  margin: 40px 0 44px;
 }
 
 .hero h1 {
-  font-size: 38px;
-  line-height: 1.15;
-  margin: 0 0 14px;
+  font-size: clamp(40px, 6vw, 60px);
+  font-weight: 600;
+  line-height: 1.08;
+  margin: 0 0 18px;
   color: var(--head);
   letter-spacing: -0.5px;
 }
@@ -264,11 +265,12 @@
 }
 
 .landing-text h1 {
-  font-size: clamp(30px, 4vw, 44px);
-  line-height: 1.1;
-  margin: 0 0 18px;
+  font-size: clamp(40px, 5.5vw, 64px);
+  font-weight: 600;
+  line-height: 1.04;
+  margin: 0 0 22px;
   color: var(--head);
-  letter-spacing: -0.6px;
+  letter-spacing: -0.8px;
 }
 
 .landing-text .hero-sub {
