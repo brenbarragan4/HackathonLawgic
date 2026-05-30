@@ -63,11 +63,23 @@ function App() {
   const recRef = useRef(null)
   const baseVozRef = useRef('')
 
-  // --- Tema y guía ---
+  // --- Tema y navegación ---
   const [tema, setTema] = useState(
     () => (typeof localStorage !== 'undefined' && localStorage.getItem('tema')) || 'light'
   )
-  const [vistaGuia, setVistaGuia] = useState(false)
+  // Pestaña principal: 'inicio' (portada + ejemplos + cómo funciona) o 'servicios' (las herramientas)
+  const [vista, setVista] = useState('inicio')
+
+  function irAServicios(modoDestino) {
+    if (modoDestino) setModo(modoDestino)
+    setVista('servicios')
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+
+  function irAVista(v) {
+    setVista(v)
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
 
   useEffect(() => {
     document.documentElement.setAttribute('data-theme', tema)
@@ -100,6 +112,7 @@ function App() {
 
   async function onProbarEjemplo() {
     setModo('analizar')
+    setVista('servicios')
     setTexto(CONTRATO_EJEMPLO)
     setError('')
     setErrorArchivo('')
@@ -230,10 +243,32 @@ function App() {
           </div>
         </div>
         <div className="topbar-right no-print">
-          <span className="brand-tag">Tu auxiliar jurídico con IA</span>
-          <button className="icon-btn" onClick={() => setVistaGuia((v) => !v)}>
-            {vistaGuia ? '← Volver' : '📘 ¿Cómo funciona?'}
-          </button>
+          <nav className="mainnav">
+            <button
+              className={`mainnav-btn ${vista === 'inicio' ? 'activo' : ''}`}
+              onClick={() => irAVista('inicio')}
+            >
+              Inicio
+            </button>
+            <button
+              className={`mainnav-btn ${vista === 'servicios' ? 'activo' : ''}`}
+              onClick={() => irAServicios()}
+            >
+              Servicios
+            </button>
+            <button
+              className={`mainnav-btn ${vista === 'cobrar' ? 'activo' : ''}`}
+              onClick={() => irAVista('cobrar')}
+            >
+              Calcular precio
+            </button>
+            <button
+              className={`mainnav-btn ${vista === 'contacto' ? 'activo' : ''}`}
+              onClick={() => irAVista('contacto')}
+            >
+              Contacto
+            </button>
+          </nav>
           <button
             className="icon-btn icon-btn--solo"
             onClick={() => setTema(tema === 'dark' ? 'light' : 'dark')}
@@ -245,9 +280,12 @@ function App() {
         </div>
       </header>
 
-      {vistaGuia && <Guia onEmpezar={() => setVistaGuia(false)} />}
+      {/* ===================== INICIO (portada + ejemplos + cómo funciona) ===================== */}
+      {vista === 'inicio' && (
+        <Inicio onProbarEjemplo={onProbarEjemplo} onIrServicios={() => irAServicios('analizar')} />
+      )}
 
-      <main className="container" hidden={vistaGuia}>
+      <main className="container" hidden={vista !== 'servicios'}>
         <div className="segmented no-print">
           <button
             className={`seg-btn ${modo === 'analizar' ? 'activo' : ''}`}
@@ -261,68 +299,11 @@ function App() {
           >
             🆕 Crear contrato
           </button>
-          <button
-            className={`seg-btn ${modo === 'cobrar' ? 'activo' : ''}`}
-            onClick={() => setModo('cobrar')}
-          >
-            💰 Calcular precio
-          </button>
         </div>
-
-        {/* ===================== MODO CALCULAR PRECIO ===================== */}
-        {modo === 'cobrar' && <Calculadora />}
 
         {/* ===================== MODO ANALIZAR ===================== */}
         {modo === 'analizar' && (
           <>
-            {!resultado && !cargando && (
-              <section className="landing">
-                <div className="landing-text">
-                  <h1>
-                    Antes de firmar, <span className="hl">entiende lo que firmas</span>.
-                  </h1>
-                  <p className="hero-sub">
-                    Pega o sube tu contrato y, en segundos, descubre las cláusulas riesgosas
-                    explicadas en español simple, qué preguntar antes de firmar y cómo mejorarlo.
-                  </p>
-                  <div className="hero-cta">
-                    <button className="btn primary grande" onClick={onProbarEjemplo}>
-                      ▶️ Ver un análisis de ejemplo
-                    </button>
-                    <button
-                      className="btn ghost grande"
-                      onClick={() => fileRef.current?.click()}
-                    >
-                      📎 Subir mi contrato
-                    </button>
-                  </div>
-                  <div className="hero-trust">
-                    <span>✓ En segundos</span>
-                    <span>✓ PDF y Word</span>
-                    <span>✓ En español simple</span>
-                  </div>
-                </div>
-
-                <div className="landing-visual" aria-hidden="true">
-                  <div className="mock-card">
-                    <div className="mock-gauge">
-                      <div className="mock-emoji">🔴</div>
-                      <div className="mock-score">
-                        78<span>/100</span>
-                      </div>
-                      <div className="mock-label">Riesgo alto al firmar</div>
-                    </div>
-                    <div className="mock-clause">
-                      <span className="mock-badge">🔴 Riesgo alto</span>
-                      <strong>Depósito no reembolsable</strong>
-                      <p>Pierdes tu depósito aunque entregues el inmueble en buen estado.</p>
-                    </div>
-                    <div className="mock-chip">✍️ Contrato mejorado listo en Word</div>
-                  </div>
-                </div>
-              </section>
-            )}
-
             <section className="editor card">
               <div className="editor-head">
                 <h2>Tu contrato</h2>
@@ -369,78 +350,6 @@ function App() {
               </div>
               {error && <p className="error">⚠️ {error}</p>}
             </section>
-
-            {!resultado && !cargando && (
-              <section className="showcase">
-                <div className="stats">
-                  <div className="stat">
-                    <div className="stat-num">6</div>
-                    <div className="stat-label">revisiones en un solo análisis</div>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-num">3</div>
-                    <div className="stat-label">formatos que lee: PDF, Word y texto</div>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-num">2</div>
-                    <div className="stat-label">formas de exportar: PDF y Word</div>
-                  </div>
-                  <div className="stat">
-                    <div className="stat-num">$0</div>
-                    <div className="stat-label">100% gratis, sin registro</div>
-                  </div>
-                </div>
-                <div className="show-head">
-                  <h2>Todo esto en un solo análisis</h2>
-                  <p className="show-sub">
-                    La IA revisa tu contrato como lo haría un abogado, y te lo explica como un amigo.
-                  </p>
-                </div>
-                <div className="guia-grid">
-                  {[
-                    ['🚦', 'Nivel de riesgo', 'Un semáforo y puntaje de 0 a 100 sobre qué tan seguro es firmar.'],
-                    ['🔴', 'Cláusulas riesgosas', 'Cada cláusula problemática explicada en español simple.'],
-                    ['❓', 'Qué preguntar', 'Las preguntas clave que debes hacer antes de firmar.'],
-                    ['⚖️', 'Jurisprudencia', 'Temas legales y referencias relacionadas para profundizar.'],
-                    ['✍️', 'Contrato mejorado', 'Una versión justa y equilibrada, lista para Word.'],
-                    ['🎤', 'Crea por voz', 'Dicta lo que necesitas y la IA redacta un contrato nuevo.'],
-                  ].map(([e, t, d], i) => (
-                    <div key={i} className="guia-feature">
-                      <span className="emoji">{e}</span>
-                      <span>
-                        <strong>{t}</strong>
-                        {d}
-                      </span>
-                    </div>
-                  ))}
-                </div>
-
-                <h2 className="show-pasos-title">Tan fácil como 1, 2, 3</h2>
-                <div className="pasos">
-                  <div className="paso card">
-                    <div className="paso-num">1</div>
-                    <h3>Sube o pega</h3>
-                    <p>Tu contrato en PDF, Word o texto.</p>
-                  </div>
-                  <div className="paso card">
-                    <div className="paso-num">2</div>
-                    <h3>La IA analiza</h3>
-                    <p>Detecta riesgos cláusula por cláusula.</p>
-                  </div>
-                  <div className="paso card">
-                    <div className="paso-num">3</div>
-                    <h3>Descarga</h3>
-                    <p>Reporte en PDF y contrato en Word.</p>
-                  </div>
-                </div>
-
-                <div className="show-cierre">
-                  <button className="btn primary grande" onClick={onProbarEjemplo}>
-                    ▶️ Probar ahora con un ejemplo
-                  </button>
-                </div>
-              </section>
-            )}
 
             {cargando && (
               <section className="loading card">
@@ -675,6 +584,20 @@ function App() {
         )}
       </main>
 
+      {/* ===================== CALCULAR PRECIO ===================== */}
+      {vista === 'cobrar' && (
+        <main className="container">
+          <Calculadora />
+        </main>
+      )}
+
+      {/* ===================== CONTACTO ===================== */}
+      {vista === 'contacto' && (
+        <main className="container">
+          <Contacto />
+        </main>
+      )}
+
       <footer className="footer no-print">
         <p>MILEXLEGAL · Hackathon Claude para abogados · 2026</p>
       </footer>
@@ -682,53 +605,116 @@ function App() {
   )
 }
 
-function Guia({ onEmpezar }) {
+function Inicio({ onProbarEjemplo, onIrServicios }) {
   const features = [
-    ['📎', 'Sube PDF, Word o texto', 'Carga el contrato como archivo o pégalo; la app extrae el texto sola.'],
-    ['🚦', 'Nivel de riesgo al firmar', 'Un semáforo y un puntaje de 0 a 100 que te dice qué tan riesgoso es firmar.'],
-    ['🔴', 'Cláusulas riesgosas explicadas', 'Cada cláusula problemática, en español simple, y qué hacer al respecto.'],
-    ['❓', 'Preguntas antes de firmar', 'Las preguntas clave que deberías hacer antes de poner tu firma.'],
-    ['⚖️', 'Tesis y jurisprudencia', 'Temas legales y referencias relacionadas, orientativas, para profundizar.'],
-    ['🎤', 'Crea contratos por voz', 'Dictas o describes lo que necesitas y la IA redacta un contrato nuevo.'],
-    ['📄', 'Reporte en PDF', 'Descarga todo el análisis en un PDF para guardarlo o compartirlo.'],
-    ['✍️', 'Contratos en Word', 'Versiones mejoradas o nuevas, listas para descargar y editar en Word.'],
+    ['🚦', 'Nivel de riesgo', 'Un semáforo y puntaje de 0 a 100 sobre qué tan seguro es firmar.'],
+    ['🔴', 'Cláusulas riesgosas', 'Cada cláusula problemática explicada en español simple.'],
+    ['❓', 'Qué preguntar', 'Las preguntas clave que debes hacer antes de firmar.'],
+    ['⚖️', 'Jurisprudencia', 'Tesis y referencias legales relacionadas para profundizar.'],
+    ['✍️', 'Contrato mejorado', 'Una versión justa y equilibrada, lista para Word.'],
+    ['🎤', 'Crea por voz', 'Dicta lo que necesitas y la IA redacta un contrato nuevo.'],
   ]
 
   return (
-    <main className="container guia">
-      <div className="guia-hero">
-        <img className="guia-logo" src="/justicia.png" alt="MILEXLEGAL" />
-        <span className="guia-marca">MILEXLEGAL</span>
-        <h1>Revisa tu Contrato</h1>
-        <p className="guia-lead">
-          Tu auxiliar jurídico con inteligencia artificial. Entiende cualquier contrato antes de
-          firmarlo, descubre sus riesgos y crea contratos nuevos — en segundos, sin necesidad de ser
-          abogado.
-        </p>
-      </div>
+    <main className="container inicio">
+      {/* ---- Portada que vende ---- */}
+      <section className="landing">
+        <div className="landing-text">
+          <h1>
+            Antes de firmar, <span className="hl">entiende lo que firmas</span>.
+          </h1>
+          <p className="hero-sub">
+            Pega o sube tu contrato y, en segundos, descubre las cláusulas riesgosas explicadas en
+            español simple, qué preguntar antes de firmar y cómo mejorarlo.
+          </p>
+          <div className="hero-cta">
+            <button className="btn primary grande" onClick={onProbarEjemplo}>
+              ▶️ Ver un análisis de ejemplo
+            </button>
+            <button className="btn ghost grande" onClick={onIrServicios}>
+              📎 Subir mi contrato
+            </button>
+          </div>
+          <div className="hero-trust">
+            <span>✓ En segundos</span>
+            <span>✓ PDF y Word</span>
+            <span>✓ En español simple</span>
+          </div>
+        </div>
 
-      <div className="guia-bloque card">
-        <h2>🎯 El problema que resolvemos</h2>
-        <p style={{ lineHeight: 1.6, color: 'var(--ink)' }}>
-          Millones de personas firman contratos de renta, trabajo o servicios que no entienden, y
-          aceptan cláusulas abusivas sin darse cuenta. Pagar un abogado para revisar cada documento
-          es caro y lento. <strong>MILEXLEGAL democratiza la revisión legal:</strong> pones tu
-          contrato y, en segundos, sabes a qué te estás comprometiendo.
-        </p>
-      </div>
+        <div className="landing-visual" aria-hidden="true">
+          <div className="mock-card">
+            <div className="mock-gauge">
+              <div className="mock-emoji">🔴</div>
+              <div className="mock-score">
+                78<span>/100</span>
+              </div>
+              <div className="mock-label">Riesgo alto al firmar</div>
+            </div>
+            <div className="mock-clause">
+              <span className="mock-badge">🔴 Riesgo alto</span>
+              <strong>Depósito no reembolsable</strong>
+              <p>Pierdes tu depósito aunque entregues el inmueble en buen estado.</p>
+            </div>
+            <div className="mock-chip">✍️ Contrato mejorado listo en Word</div>
+          </div>
+        </div>
+      </section>
 
-      <div className="guia-bloque">
-        <h2>⚙️ Cómo funciona en 3 pasos</h2>
+      {/* ---- Números ---- */}
+      <section className="stats">
+        <div className="stat">
+          <div className="stat-num">6</div>
+          <div className="stat-label">revisiones en un solo análisis</div>
+        </div>
+        <div className="stat">
+          <div className="stat-num">3</div>
+          <div className="stat-label">formatos que lee: PDF, Word y texto</div>
+        </div>
+        <div className="stat">
+          <div className="stat-num">2</div>
+          <div className="stat-label">formas de exportar: PDF y Word</div>
+        </div>
+        <div className="stat">
+          <div className="stat-num">$0</div>
+          <div className="stat-label">100% gratis, sin registro</div>
+        </div>
+      </section>
+
+      {/* ---- Ejemplos de lo que hacemos ---- */}
+      <section className="showcase">
+        <div className="show-head">
+          <h2>Ejemplos de lo que hacemos</h2>
+          <p className="show-sub">
+            La IA revisa tu contrato como lo haría un abogado, y te lo explica como un amigo.
+          </p>
+        </div>
+        <div className="guia-grid">
+          {features.map(([e, t, d], i) => (
+            <div key={i} className="guia-feature">
+              <span className="emoji">{e}</span>
+              <span>
+                <strong>{t}</strong>
+                {d}
+              </span>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---- Cómo funciona ---- */}
+      <section className="showcase">
+        <h2 className="show-pasos-title">Cómo funciona, en 3 pasos</h2>
         <div className="pasos">
           <div className="paso card">
             <div className="paso-num">1</div>
             <h3>Sube o pega</h3>
-            <p>Carga tu contrato en PDF, Word o texto — o descríbelo por voz para crear uno nuevo.</p>
+            <p>Tu contrato en PDF, Word o texto — o descríbelo por voz para crear uno nuevo.</p>
           </div>
           <div className="paso card">
             <div className="paso-num">2</div>
             <h3>La IA trabaja</h3>
-            <p>Analiza cada cláusula y detecta riesgos, o redacta un contrato completo a tu medida.</p>
+            <p>Analiza cada cláusula y detecta riesgos, o redacta un contrato a tu medida.</p>
           </div>
           <div className="paso card">
             <div className="paso-num">3</div>
@@ -736,31 +722,28 @@ function Guia({ onEmpezar }) {
             <p>Reporte en PDF, y contratos mejorados o nuevos en Word, listos para usar.</p>
           </div>
         </div>
-      </div>
+      </section>
 
-      <div className="guia-bloque">
-        <h2>✨ Qué obtienes</h2>
-        <div className="guia-grid">
-          {features.map(([emoji, titulo, desc], i) => (
-            <div key={i} className="guia-feature">
-              <span className="emoji">{emoji}</span>
-              <span>
-                <strong>{titulo}</strong>
-                {desc}
-              </span>
-            </div>
-          ))}
-        </div>
-      </div>
+      {/* ---- El problema que resolvemos ---- */}
+      <section className="guia-bloque card problema">
+        <h2>🎯 El problema que resolvemos</h2>
+        <p>
+          Millones de personas firman contratos de renta, trabajo o servicios que no entienden, y
+          aceptan cláusulas abusivas sin darse cuenta. Pagar un abogado para revisar cada documento
+          es caro y lento. <strong>MILEXLEGAL democratiza la revisión legal:</strong> pones tu
+          contrato y, en segundos, sabes a qué te estás comprometiendo.
+        </p>
+      </section>
 
-      <div className="guia-cta no-print">
-        <button className="btn primary" onClick={onEmpezar}>
-          🚀 Empezar a usar la app
+      {/* ---- Cierre ---- */}
+      <section className="show-cierre">
+        <button className="btn primary grande" onClick={onProbarEjemplo}>
+          ▶️ Probar ahora con un ejemplo
         </button>
-        <button className="btn ghost" onClick={() => window.print()}>
+        <button className="btn ghost grande" onClick={() => window.print()}>
           📄 Descargar esta guía (PDF)
         </button>
-      </div>
+      </section>
 
       <p className="disclaimer" style={{ textAlign: 'center' }}>
         MILEXLEGAL ofrece orientación informativa generada por IA y no sustituye la asesoría de un
