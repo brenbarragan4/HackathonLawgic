@@ -98,6 +98,25 @@ function App() {
     }
   }
 
+  async function onProbarEjemplo() {
+    setModo('analizar')
+    setTexto(CONTRATO_EJEMPLO)
+    setError('')
+    setErrorArchivo('')
+    setContratoMejorado('')
+    setResultado(null)
+    setCargando(true)
+    if (typeof window !== 'undefined') window.scrollTo({ top: 0, behavior: 'smooth' })
+    try {
+      const data = await analizarContrato(CONTRATO_EJEMPLO)
+      setResultado(data)
+    } catch (e) {
+      setError(e.message || 'Ocurrió un error al analizar.')
+    } finally {
+      setCargando(false)
+    }
+  }
+
   async function onArchivo(e) {
     const file = e.target.files?.[0]
     if (!file) return
@@ -241,20 +260,65 @@ function App() {
           >
             🆕 Crear contrato
           </button>
+          <button
+            className={`seg-btn ${modo === 'cobrar' ? 'activo' : ''}`}
+            onClick={() => setModo('cobrar')}
+          >
+            💰 Calcular precio
+          </button>
         </div>
+
+        {/* ===================== MODO CALCULAR PRECIO ===================== */}
+        {modo === 'cobrar' && <Calculadora />}
 
         {/* ===================== MODO ANALIZAR ===================== */}
         {modo === 'analizar' && (
           <>
-            {!resultado && (
-              <section className="hero">
-                <h1>
-                  Antes de firmar, <span className="hl">entiende lo que firmas</span>.
-                </h1>
-                <p className="hero-sub">
-                  Pega o sube tu contrato (PDF, Word o texto) y la inteligencia artificial te dirá,
-                  en español sencillo, qué cláusulas son riesgosas, qué preguntar y cómo mejorarlo.
-                </p>
+            {!resultado && !cargando && (
+              <section className="landing">
+                <div className="landing-text">
+                  <h1>
+                    Antes de firmar, <span className="hl">entiende lo que firmas</span>.
+                  </h1>
+                  <p className="hero-sub">
+                    Pega o sube tu contrato y, en segundos, descubre las cláusulas riesgosas
+                    explicadas en español simple, qué preguntar antes de firmar y cómo mejorarlo.
+                  </p>
+                  <div className="hero-cta">
+                    <button className="btn primary grande" onClick={onProbarEjemplo}>
+                      ▶️ Ver un análisis de ejemplo
+                    </button>
+                    <button
+                      className="btn ghost grande"
+                      onClick={() => fileRef.current?.click()}
+                    >
+                      📎 Subir mi contrato
+                    </button>
+                  </div>
+                  <div className="hero-trust">
+                    <span>✓ En segundos</span>
+                    <span>✓ PDF y Word</span>
+                    <span>✓ En español simple</span>
+                  </div>
+                </div>
+
+                <div className="landing-visual" aria-hidden="true">
+                  <div className="mock-card">
+                    <div className="mock-gauge">
+                      <div className="mock-emoji">🔴</div>
+                      <div className="mock-score">
+                        78<span>/100</span>
+                      </div>
+                      <div className="mock-label">Riesgo alto al firmar</div>
+                    </div>
+                    <div className="mock-clause">
+                      <span className="mock-badge">🔴 Riesgo alto</span>
+                      <strong>Depósito no reembolsable</strong>
+                      <p>Pierdes tu depósito aunque entregues el inmueble en buen estado.</p>
+                    </div>
+                    <div className="mock-chip">✍️ Contrato mejorado listo en Word</div>
+                  </div>
+                </div>
               </section>
             )}
 
@@ -304,6 +368,60 @@ function App() {
               </div>
               {error && <p className="error">⚠️ {error}</p>}
             </section>
+
+            {!resultado && !cargando && (
+              <section className="showcase">
+                <div className="show-head">
+                  <h2>Todo esto en un solo análisis</h2>
+                  <p className="show-sub">
+                    La IA revisa tu contrato como lo haría un abogado, y te lo explica como un amigo.
+                  </p>
+                </div>
+                <div className="guia-grid">
+                  {[
+                    ['🚦', 'Nivel de riesgo', 'Un semáforo y puntaje de 0 a 100 sobre qué tan seguro es firmar.'],
+                    ['🔴', 'Cláusulas riesgosas', 'Cada cláusula problemática explicada en español simple.'],
+                    ['❓', 'Qué preguntar', 'Las preguntas clave que debes hacer antes de firmar.'],
+                    ['⚖️', 'Jurisprudencia', 'Temas legales y referencias relacionadas para profundizar.'],
+                    ['✍️', 'Contrato mejorado', 'Una versión justa y equilibrada, lista para Word.'],
+                    ['🎤', 'Crea por voz', 'Dicta lo que necesitas y la IA redacta un contrato nuevo.'],
+                  ].map(([e, t, d], i) => (
+                    <div key={i} className="guia-feature">
+                      <span className="emoji">{e}</span>
+                      <span>
+                        <strong>{t}</strong>
+                        {d}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                <h2 className="show-pasos-title">Tan fácil como 1, 2, 3</h2>
+                <div className="pasos">
+                  <div className="paso card">
+                    <div className="paso-num">1</div>
+                    <h3>Sube o pega</h3>
+                    <p>Tu contrato en PDF, Word o texto.</p>
+                  </div>
+                  <div className="paso card">
+                    <div className="paso-num">2</div>
+                    <h3>La IA analiza</h3>
+                    <p>Detecta riesgos cláusula por cláusula.</p>
+                  </div>
+                  <div className="paso card">
+                    <div className="paso-num">3</div>
+                    <h3>Descarga</h3>
+                    <p>Reporte en PDF y contrato en Word.</p>
+                  </div>
+                </div>
+
+                <div className="show-cierre">
+                  <button className="btn primary grande" onClick={onProbarEjemplo}>
+                    ▶️ Probar ahora con un ejemplo
+                  </button>
+                </div>
+              </section>
+            )}
 
             {cargando && (
               <section className="loading card">
@@ -630,6 +748,284 @@ function Guia({ onEmpezar }) {
         abogado.
       </p>
     </main>
+  )
+}
+
+// ---------- Calculadora de precio ----------
+const TIPOS = [
+  { id: 'sencillo', nombre: 'Sencillo', ejemplo: 'Carta responsiva, recibo, pagaré simple', base: 700 },
+  { id: 'estandar', nombre: 'Estándar', ejemplo: 'Arrendamiento, prestación de servicios, compraventa simple', base: 1800 },
+  { id: 'complejo', nombre: 'Complejo', ejemplo: 'Laboral, sociedad, distribución, confidencialidad', base: 3800 },
+  { id: 'corporativo', nombre: 'Corporativo', ejemplo: 'Alta especialización, fusiones, contratos internacionales', base: 7500 },
+]
+
+const SERVICIOS = [
+  { id: 'analisis', emoji: '🔍', nombre: 'Análisis de riesgos cláusula por cláusula', precio: 600 },
+  { id: 'mejorado', emoji: '✍️', nombre: 'Redacción profesional / contrato mejorado', precio: 1200 },
+  { id: 'juris', emoji: '⚖️', nombre: 'Investigación de jurisprudencia y tesis', precio: 900 },
+  { id: 'preguntas', emoji: '❓', nombre: 'Asesoría: preguntas clave antes de firmar', precio: 500 },
+  { id: 'faltantes', emoji: '🛡️', nombre: 'Detección de cláusulas faltantes y protecciones', precio: 450 },
+  { id: 'entrega', emoji: '📄', nombre: 'Entrega en PDF y Word editable', precio: 300 },
+  { id: 'bilingue', emoji: '🌐', nombre: 'Versión bilingüe (español / inglés)', precio: 1500 },
+]
+
+const URGENCIAS = [
+  { id: 'normal', nombre: 'Normal (5–7 días)', factor: 1 },
+  { id: 'rapida', nombre: 'Rápida (48–72 h)', factor: 1.25 },
+  { id: 'urgente', nombre: 'Urgente (24 h)', factor: 1.5 },
+]
+
+const CLIENTES = [
+  { id: 'fisica', nombre: 'Persona física', factor: 1 },
+  { id: 'pyme', nombre: 'Empresa / PyME', factor: 1.15 },
+  { id: 'corporativo', nombre: 'Corporativo grande', factor: 1.35 },
+]
+
+const PAGINAS_INCLUIDAS = 5
+const PRECIO_PAGINA_EXTRA = 120
+const REVISIONES_INCLUIDAS = 1
+const PRECIO_REVISION_EXTRA = 350
+
+function pesos(n) {
+  return n.toLocaleString('es-MX', { style: 'currency', currency: 'MXN', maximumFractionDigits: 0 })
+}
+
+function Calculadora() {
+  const [tipoId, setTipoId] = useState('estandar')
+  const [servicios, setServicios] = useState(() => new Set(['analisis', 'mejorado', 'entrega']))
+  const [paginas, setPaginas] = useState(5)
+  const [revisiones, setRevisiones] = useState(1)
+  const [urgenciaId, setUrgenciaId] = useState('normal')
+  const [clienteId, setClienteId] = useState('fisica')
+
+  const tipo = TIPOS.find((t) => t.id === tipoId)
+  const urgencia = URGENCIAS.find((u) => u.id === urgenciaId)
+  const cliente = CLIENTES.find((c) => c.id === clienteId)
+
+  const serviciosSel = SERVICIOS.filter((s) => servicios.has(s.id))
+  const totalServicios = serviciosSel.reduce((a, s) => a + s.precio, 0)
+
+  const paginasExtra = Math.max(0, paginas - PAGINAS_INCLUIDAS)
+  const costoPaginas = paginasExtra * PRECIO_PAGINA_EXTRA
+
+  const revisionesExtra = Math.max(0, revisiones - REVISIONES_INCLUIDAS)
+  const costoRevisiones = revisionesExtra * PRECIO_REVISION_EXTRA
+
+  const subtotal = tipo.base + totalServicios + costoPaginas + costoRevisiones
+  const total = Math.round((subtotal * urgencia.factor * cliente.factor) / 10) * 10
+  const rangoBajo = Math.round((total * 0.9) / 10) * 10
+  const rangoAlto = Math.round((total * 1.1) / 10) * 10
+
+  function toggleServicio(id) {
+    setServicios((prev) => {
+      const next = new Set(prev)
+      if (next.has(id)) next.delete(id)
+      else next.add(id)
+      return next
+    })
+  }
+
+  function descargarCotizacion() {
+    const lineas = [
+      'MILEXLEGAL — Cotización de elaboración de contrato',
+      '',
+      `Tipo de contrato: ${tipo.nombre} (${tipo.ejemplo})`,
+      `Precio base: ${pesos(tipo.base)}`,
+      '',
+      'Servicios incluidos:',
+      ...(serviciosSel.length
+        ? serviciosSel.map((s) => `  • ${s.nombre} — ${pesos(s.precio)}`)
+        : ['  • (ninguno seleccionado)']),
+      '',
+      `Páginas del contrato: ${paginas} (${PAGINAS_INCLUIDAS} incluidas, ${paginasExtra} extra) — ${pesos(costoPaginas)}`,
+      `Rondas de revisión: ${revisiones} (${REVISIONES_INCLUIDAS} incluida, ${revisionesExtra} extra) — ${pesos(costoRevisiones)}`,
+      '',
+      `Subtotal: ${pesos(subtotal)}`,
+      `Urgencia: ${urgencia.nombre} (x${urgencia.factor})`,
+      `Tipo de cliente: ${cliente.nombre} (x${cliente.factor})`,
+      '',
+      `TOTAL SUGERIDO: ${pesos(total)}`,
+      `Rango sugerido: ${pesos(rangoBajo)} – ${pesos(rangoAlto)}`,
+      '',
+      'Cotización generada con MILEXLEGAL. Precios de referencia; ajusta según tu criterio profesional.',
+    ]
+    descargarWord(lineas.join('\n'), 'cotizacion-milexlegal.doc')
+  }
+
+  return (
+    <>
+      <section className="hero">
+        <h1>
+          ¿Cuánto cobrar por <span className="hl">elaborar un contrato</span>?
+        </h1>
+        <p className="hero-sub">
+          Arma tu cotización: elige el tipo de contrato, marca los servicios que ofreces y ajusta la
+          urgencia y el cliente. La calculadora te sugiere un precio justo en pesos.
+        </p>
+      </section>
+
+      <div className="calc">
+        <div className="calc-form">
+          <section className="card calc-bloque">
+            <h2>1. Tipo de contrato</h2>
+            <div className="calc-opciones">
+              {TIPOS.map((t) => (
+                <button
+                  key={t.id}
+                  className={`calc-op ${tipoId === t.id ? 'activo' : ''}`}
+                  onClick={() => setTipoId(t.id)}
+                >
+                  <div className="calc-op-top">
+                    <strong>{t.nombre}</strong>
+                    <span className="calc-precio">{pesos(t.base)}</span>
+                  </div>
+                  <span className="calc-op-ej">{t.ejemplo}</span>
+                </button>
+              ))}
+            </div>
+          </section>
+
+          <section className="card calc-bloque">
+            <h2>2. Servicios que incluyes</h2>
+            <div className="calc-servicios">
+              {SERVICIOS.map((s) => (
+                <label key={s.id} className={`calc-check ${servicios.has(s.id) ? 'activo' : ''}`}>
+                  <input
+                    type="checkbox"
+                    checked={servicios.has(s.id)}
+                    onChange={() => toggleServicio(s.id)}
+                  />
+                  <span className="calc-check-txt">
+                    {s.emoji} {s.nombre}
+                  </span>
+                  <span className="calc-precio">+{pesos(s.precio)}</span>
+                </label>
+              ))}
+            </div>
+          </section>
+
+          <section className="card calc-bloque">
+            <h2>3. Tamaño y revisiones</h2>
+            <div className="calc-numeros">
+              <div className="calc-num">
+                <label>
+                  Páginas del contrato
+                  <small>{PAGINAS_INCLUIDAS} incluidas · luego +{pesos(PRECIO_PAGINA_EXTRA)} c/u</small>
+                </label>
+                <div className="stepper">
+                  <button onClick={() => setPaginas((p) => Math.max(1, p - 1))}>−</button>
+                  <span>{paginas}</span>
+                  <button onClick={() => setPaginas((p) => p + 1)}>+</button>
+                </div>
+              </div>
+              <div className="calc-num">
+                <label>
+                  Rondas de revisión
+                  <small>{REVISIONES_INCLUIDAS} incluida · luego +{pesos(PRECIO_REVISION_EXTRA)} c/u</small>
+                </label>
+                <div className="stepper">
+                  <button onClick={() => setRevisiones((r) => Math.max(0, r - 1))}>−</button>
+                  <span>{revisiones}</span>
+                  <button onClick={() => setRevisiones((r) => r + 1)}>+</button>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          <section className="card calc-bloque">
+            <h2>4. Urgencia y cliente</h2>
+            <div className="calc-doble">
+              <div>
+                <p className="calc-sub">Urgencia</p>
+                <div className="calc-pills">
+                  {URGENCIAS.map((u) => (
+                    <button
+                      key={u.id}
+                      className={`calc-pill ${urgenciaId === u.id ? 'activo' : ''}`}
+                      onClick={() => setUrgenciaId(u.id)}
+                    >
+                      {u.nombre}
+                    </button>
+                  ))}
+                </div>
+              </div>
+              <div>
+                <p className="calc-sub">Tipo de cliente</p>
+                <div className="calc-pills">
+                  {CLIENTES.map((c) => (
+                    <button
+                      key={c.id}
+                      className={`calc-pill ${clienteId === c.id ? 'activo' : ''}`}
+                      onClick={() => setClienteId(c.id)}
+                    >
+                      {c.nombre}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <aside className="calc-total card">
+          <h2>Tu cotización</h2>
+          <ul className="calc-desglose">
+            <li>
+              <span>Base ({tipo.nombre})</span>
+              <span>{pesos(tipo.base)}</span>
+            </li>
+            <li>
+              <span>Servicios ({serviciosSel.length})</span>
+              <span>{pesos(totalServicios)}</span>
+            </li>
+            {costoPaginas > 0 && (
+              <li>
+                <span>{paginasExtra} página(s) extra</span>
+                <span>{pesos(costoPaginas)}</span>
+              </li>
+            )}
+            {costoRevisiones > 0 && (
+              <li>
+                <span>{revisionesExtra} revisión(es) extra</span>
+                <span>{pesos(costoRevisiones)}</span>
+              </li>
+            )}
+            <li className="calc-subtotal">
+              <span>Subtotal</span>
+              <span>{pesos(subtotal)}</span>
+            </li>
+            {urgencia.factor !== 1 && (
+              <li className="calc-mult">
+                <span>Urgencia ({urgencia.nombre})</span>
+                <span>×{urgencia.factor}</span>
+              </li>
+            )}
+            {cliente.factor !== 1 && (
+              <li className="calc-mult">
+                <span>Cliente ({cliente.nombre})</span>
+                <span>×{cliente.factor}</span>
+              </li>
+            )}
+          </ul>
+
+          <div className="calc-grandtotal">
+            <span>Total sugerido</span>
+            <strong>{pesos(total)}</strong>
+          </div>
+          <p className="calc-rango">
+            Rango razonable: <strong>{pesos(rangoBajo)}</strong> – <strong>{pesos(rangoAlto)}</strong>
+          </p>
+
+          <button className="btn primary" onClick={descargarCotizacion}>
+            ⬇️ Descargar cotización (Word)
+          </button>
+          <p className="disclaimer">
+            Precios de referencia generados por la calculadora. Ajústalos según tu experiencia, plaza
+            y el caso concreto.
+          </p>
+        </aside>
+      </div>
+    </>
   )
 }
 
