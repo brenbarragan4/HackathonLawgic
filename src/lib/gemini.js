@@ -198,3 +198,68 @@ export async function generarContratoMejorado(textoContrato) {
   }
   return texto.trim()
 }
+
+const INSTRUCCIONES_NUEVO = `Eres un abogado experto en redacción de contratos en México.
+La persona te describe, con sus palabras, el contrato que necesita. Tu tarea es redactar un
+contrato COMPLETO, justo y profesional a partir de esa descripción.
+
+- Identifica el tipo de contrato adecuado según lo que pide.
+- Incluye todas las cláusulas necesarias y equilibradas para ambas partes.
+- Agrega protecciones estándar (terminación, plazos, pagos, obligaciones, resolución de controversias).
+- Donde falten datos concretos, deja espacios para llenar: ____________.
+
+Devuelve SOLO el texto del contrato:
+- Título en la primera línea.
+- Cláusulas numeradas con ordinales (PRIMERA., SEGUNDA., ...).
+- Al final, líneas para las firmas de ambas partes.
+
+No agregues explicaciones ni comentarios fuera del contrato. En español.`
+
+export async function crearContratoNuevo(descripcion) {
+  if (!API_KEY) {
+    throw new Error(
+      'No se encontró la llave de Gemini. Revisa que VITE_GEMINI_API_KEY esté en el archivo .env.local y reinicia el servidor.'
+    )
+  }
+
+  const body = {
+    contents: [
+      {
+        parts: [
+          { text: INSTRUCCIONES_NUEVO },
+          { text: '\n\n=== LO QUE NECESITA LA PERSONA ===\n\n' + descripcion },
+        ],
+      },
+    ],
+    generationConfig: { temperature: 0.5 },
+  }
+
+  let res
+  try {
+    res = await fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(body),
+    })
+  } catch {
+    throw new Error('No se pudo conectar con Gemini. Revisa tu conexión a internet.')
+  }
+
+  if (!res.ok) {
+    let detalle = ''
+    try {
+      const err = await res.json()
+      detalle = err?.error?.message || ''
+    } catch {
+      // sin detalle
+    }
+    throw new Error(`Gemini respondió con un error (${res.status}). ${detalle}`)
+  }
+
+  const data = await res.json()
+  const texto = data?.candidates?.[0]?.content?.parts?.[0]?.text
+  if (!texto) {
+    throw new Error('Gemini no devolvió un contrato. Intenta de nuevo.')
+  }
+  return texto.trim()
+}
