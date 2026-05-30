@@ -788,16 +788,6 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
         </p>
       </section>
 
-      {/* ---- Cierre ---- */}
-      <section className="show-cierre">
-        <button className="btn primary grande" onClick={onProbarEjemplo}>
-          ▶️ Probar ahora con un ejemplo
-        </button>
-        <button className="btn ghost grande" onClick={() => window.print()}>
-          📄 Descargar esta guía (PDF)
-        </button>
-      </section>
-
       <p className="disclaimer" style={{ textAlign: 'center' }}>
         MILEXLEGAL ofrece orientación informativa generada por IA y no sustituye la asesoría de un
         abogado.
