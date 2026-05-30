@@ -1,0 +1,231 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>MILEXLEGAL · Presentación</title>
+<style>
+  :root {
+    --navy: #0f1f3d;
+    --ink: #1a2233;
+    --muted: #5b6678;
+    --brand: #ff914d;
+    --green: #2f7d57;
+    --bg: #eef3ee;
+    --card: #ffffff;
+    --line: #d7e0d8;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    font-family: 'Segoe UI', system-ui, Roboto, sans-serif;
+    background: linear-gradient(135deg, #e9efe9 0%, #e3ebe5 100%);
+    color: var(--ink);
+    overflow: hidden;
+  }
+  .deck { height: 100vh; width: 100vw; position: relative; }
+  .slide {
+    position: absolute; inset: 0;
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding: 6vh 8vw;
+    animation: fade .35s ease;
+  }
+  .slide.activa { display: flex; }
+  @keyframes fade { from { opacity: 0; transform: translateY(12px);} to {opacity:1; transform:none;} }
+
+  h1 { font-size: clamp(30px, 5vw, 60px); color: var(--navy); letter-spacing: -1px; line-height: 1.08; }
+  h2 { font-size: clamp(24px, 3.6vw, 42px); color: var(--navy); margin-bottom: 22px; letter-spacing: -.5px; }
+  p, li { font-size: clamp(16px, 2vw, 23px); color: var(--ink); line-height: 1.5; }
+  .muted { color: var(--muted); }
+  .hl { color: var(--brand); }
+  .green { color: var(--green); }
+  .marca { color: var(--green); font-weight: 800; letter-spacing: 3px; font-size: clamp(14px,1.6vw,18px); }
+
+  .logo { height: clamp(120px, 20vh, 200px); filter: drop-shadow(0 8px 18px rgba(47,125,87,.25)); }
+  .tagline { font-size: clamp(18px,2.4vw,28px); color: var(--muted); margin-top: 10px; }
+  .presenter { margin-top: 26px; font-size: 16px; color: var(--muted); }
+
+  ul { list-style: none; max-width: 900px; text-align: left; }
+  ul li { margin: 14px 0; padding-left: 38px; position: relative; }
+  ul li::before { content: ''; position: absolute; left: 0; top: .55em; width: 14px; height: 14px; border-radius: 50%; background: var(--brand); }
+  ul.check li::before { content: '✓'; background: none; color: var(--green); font-weight: 800; font-size: 22px; top: 0; left: 4px; width:auto;height:auto; }
+
+  .pasos { display: flex; gap: 26px; flex-wrap: wrap; justify-content: center; margin-top: 14px; }
+  .paso { background: var(--card); border:1px solid var(--line); border-radius: 18px; padding: 26px; width: 260px; box-shadow: 0 10px 30px rgba(15,31,61,.06); }
+  .paso .n { width: 52px; height: 52px; border-radius: 50%; background: var(--brand); color:#fff; font-weight: 800; font-size: 24px; display:grid; place-items:center; margin: 0 auto 14px; }
+  .paso h3 { color: var(--navy); font-size: 21px; margin-bottom: 8px; }
+  .paso p { font-size: 16px; color: var(--muted); }
+
+  .grid { display: grid; grid-template-columns: repeat(2, minmax(260px, 1fr)); gap: 16px; max-width: 980px; margin-top: 10px; }
+  .feat { background: var(--card); border:1px solid var(--line); border-radius: 14px; padding: 16px 18px; text-align: left; display:flex; gap:12px; align-items:flex-start; }
+  .feat .e { font-size: 26px; }
+  .feat b { color: var(--navy); display:block; font-size: 18px; }
+  .feat span { color: var(--muted); font-size: 15px; }
+
+  .vs { display:flex; gap: 20px; max-width: 980px; margin-top: 10px; flex-wrap: wrap; justify-content:center; }
+  .vs .col { flex:1; min-width: 280px; background: var(--card); border:1px solid var(--line); border-radius: 16px; padding: 22px; text-align:left; }
+  .vs .col.win { border: 2px solid var(--green); }
+  .vs h3 { font-size: 20px; margin-bottom: 12px; }
+  .vs .col.win h3 { color: var(--green); }
+  .vs li { font-size: 16px; margin: 8px 0; padding-left: 26px; }
+  .frase { margin-top: 26px; font-size: clamp(18px,2.4vw,28px); font-style: italic; color: var(--navy); }
+
+  .url { margin-top: 24px; font-size: clamp(18px,2.4vw,26px); font-weight: 700; color: var(--green); }
+
+  .nav { position: fixed; bottom: 20px; left: 0; right: 0; display:flex; align-items:center; justify-content:center; gap: 18px; z-index: 10; }
+  .nav button { border:none; background: var(--navy); color:#fff; width: 44px; height: 44px; border-radius: 50%; font-size: 20px; cursor:pointer; opacity:.9; }
+  .nav button:hover { opacity: 1; }
+  .dots { display:flex; gap: 8px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; background: #c3cdc4; cursor: pointer; }
+  .dot.on { background: var(--brand); }
+  .pageno { position: fixed; top: 18px; right: 22px; color: var(--muted); font-size: 14px; font-weight: 600; }
+  .hint { position: fixed; bottom: 22px; right: 22px; color: var(--muted); font-size: 13px; }
+
+  @media print {
+    body { overflow: visible; }
+    .slide { display: flex !important; position: relative; height: 100vh; page-break-after: always; }
+    .nav, .pageno, .hint { display: none; }
+  }
+</style>
+</head>
+<body>
+<div class="deck" id="deck">
+
+  <section class="slide activa">
+    <img class="logo" src="/justicia.png" alt="MILEXLEGAL" />
+    <div class="marca">MILEXLEGAL</div>
+    <h1>Revisa tu Contrato</h1>
+    <div class="tagline">Tu auxiliar jurídico con Inteligencia Artificial</div>
+    <div class="presenter">Brenda Barragán · Hackathon Claude para Abogados · 2026</div>
+  </section>
+
+  <section class="slide">
+    <h2>🎯 El problema</h2>
+    <p style="max-width:880px"><strong>Firmamos lo que no entendemos.</strong></p>
+    <ul>
+      <li>Los contratos están llenos de lenguaje legal complejo.</li>
+      <li>Las cláusulas abusivas pasan desapercibidas.</li>
+      <li>Pagar un abogado para revisar cada documento es caro y lento.</li>
+      <li><span class="green">Resultado:</span> personas atrapadas en contratos injustos.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>💡 La solución</h2>
+    <p style="max-width:900px; font-size: clamp(18px,2.4vw,28px)">
+      <strong>MILEXLEGAL</strong> permite que <span class="hl">cualquier persona, sin saber de leyes</span>,
+      entienda y mejore un contrato en segundos.
+    </p>
+    <p class="muted" style="max-width:820px; margin-top:18px">
+      Solo pega o sube su contrato (PDF, Word o texto)… y la IA hace el resto.
+    </p>
+  </section>
+
+  <section class="slide">
+    <h2>⚙️ Cómo funciona</h2>
+    <div class="pasos">
+      <div class="paso"><div class="n">1</div><h3>Sube o dicta</h3><p>Carga tu contrato en PDF, Word o texto — o descríbelo por voz.</p></div>
+      <div class="paso"><div class="n">2</div><h3>La IA trabaja</h3><p>Detecta riesgos cláusula por cláusula, o redacta un contrato a tu medida.</p></div>
+      <div class="paso"><div class="n">3</div><h3>Descarga</h3><p>Reporte en PDF y contratos en Word, listos para usar.</p></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>✨ Qué entrega</h2>
+    <div class="grid">
+      <div class="feat"><span class="e">🚦</span><span><b>Riesgo al firmar</b>Semáforo y puntaje de 0 a 100.</span></div>
+      <div class="feat"><span class="e">🔴</span><span><b>Cláusulas explicadas</b>En español simple, con qué hacer.</span></div>
+      <div class="feat"><span class="e">❓</span><span><b>Preguntas antes de firmar</b>Qué preguntar antes de firmar.</span></div>
+      <div class="feat"><span class="e">⚖️</span><span><b>Tesis y jurisprudencia</b>Referencias legales relacionadas.</span></div>
+      <div class="feat"><span class="e">✍️</span><span><b>Contrato mejorado</b>Versión justa, exportable a Word.</span></div>
+      <div class="feat"><span class="e">🎤</span><span><b>Crear por voz</b>Dicta lo que necesitas y la IA lo redacta.</span></div>
+    </div>
+  </section>
+
+  <section class="slide">
+    <h2>🥇 ¿Por qué no es "solo un chat"?</h2>
+    <div class="vs">
+      <div class="col">
+        <h3>Un chat de IA</h3>
+        <ul>
+          <li>🔸 Tienes que saber qué preguntar</li>
+          <li>🔸 Respuesta distinta cada vez</li>
+          <li>🔸 No exporta nada</li>
+          <li>🔸 Intimida a quien no es técnico</li>
+        </ul>
+      </div>
+      <div class="col win">
+        <h3>MILEXLEGAL</h3>
+        <ul>
+          <li>✅ Solo pegas o subes — sin prompts</li>
+          <li>✅ Reporte estructurado y consistente</li>
+          <li>✅ PDF + contratos en Word</li>
+          <li>✅ Para cualquier persona, gratis</li>
+        </ul>
+      </div>
+    </div>
+    <div class="frase">"Claude es la cocina; MILEXLEGAL es el platillo servido."</div>
+  </section>
+
+  <section class="slide">
+    <h2>🛠️ Tecnología</h2>
+    <ul class="check">
+      <li>Aplicación web con código propio (React + Vite) — sin builders no-code.</li>
+      <li>Inteligencia artificial generativa para analizar y redactar.</li>
+      <li>Lectura de archivos PDF y Word, y dictado por voz.</li>
+      <li>Exportación a PDF y Word, modo claro/oscuro.</li>
+      <li>Desplegada en vivo en Vercel.</li>
+    </ul>
+  </section>
+
+  <section class="slide">
+    <h2>🌎 Impacto</h2>
+    <p style="max-width:880px; font-size: clamp(18px,2.4vw,28px)">
+      MILEXLEGAL <strong>democratiza el acceso a la orientación legal</strong>: una primera revisión
+      de tus contratos, gratis y en segundos, para decidir informado antes de firmar.
+    </p>
+    <div class="url">hackathonlawgic.vercel.app</div>
+    <p class="presenter">Gracias · MILEXLEGAL</p>
+  </section>
+
+</div>
+
+<div class="pageno"><span id="actual">1</span> / <span id="total">8</span></div>
+<div class="nav">
+  <button onclick="ir(-1)">‹</button>
+  <div class="dots" id="dots"></div>
+  <button onclick="ir(1)">›</button>
+</div>
+<div class="hint">Usa ← → para navegar · F11 pantalla completa</div>
+
+<script>
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  let i = 0;
+  const dots = document.getElementById('dots');
+  document.getElementById('total').textContent = slides.length;
+  slides.forEach((_, idx) => {
+    const d = document.createElement('div');
+    d.className = 'dot' + (idx === 0 ? ' on' : '');
+    d.onclick = () => mostrar(idx);
+    dots.appendChild(d);
+  });
+  function mostrar(n) {
+    i = Math.max(0, Math.min(slides.length - 1, n));
+    slides.forEach((s, idx) => s.classList.toggle('activa', idx === i));
+    Array.from(dots.children).forEach((d, idx) => d.classList.toggle('on', idx === i));
+    document.getElementById('actual').textContent = i + 1;
+  }
+  function ir(paso) { mostrar(i + paso); }
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') ir(1);
+    if (e.key === 'ArrowLeft' || e.key === 'PageUp') ir(-1);
+    if (e.key === 'Home') mostrar(0);
+    if (e.key === 'End') mostrar(slides.length - 1);
+  });
+</script>
+</body>
+</html>
