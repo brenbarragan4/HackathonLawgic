@@ -628,11 +628,6 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
             detecta cláusulas riesgosas, qué preguntar y cómo mejorarlo, para que el abogado decida
             con todo sobre la mesa.
           </p>
-          <div className="hero-trust">
-            <span>✓ En segundos</span>
-            <span>✓ PDF y Word</span>
-            <span>✓ En español simple</span>
-          </div>
         </div>
 
         <div className="landing-visual" aria-hidden="true">
