@@ -356,6 +356,43 @@
   border-radius: 10px;
 }
 
+/* ---------- Stats ---------- */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 14px;
+  margin: 4px 0 30px;
+}
+
+.stat {
+  text-align: center;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 12px;
+  box-shadow: 0 6px 20px rgba(15, 31, 61, 0.05);
+}
+
+.stat-num {
+  font-size: 36px;
+  font-weight: 800;
+  color: var(--brand);
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 13px;
+  color: var(--muted);
+  margin-top: 8px;
+  line-height: 1.35;
+}
+
+@media (max-width: 560px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
 /* ---------- Showcase didáctico ---------- */
 .showcase {
   margin: 12px 0 10px;
