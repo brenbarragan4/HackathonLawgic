@@ -536,7 +536,34 @@ function App() {
                   )}
                 </div>
               </div>
-              {escuchando && <p className="escuchando-aviso">🔴 Escuchando… habla con claridad.</p>}
+              <div
+                className={`asistente${escuchando ? ' asistente--hablando' : ''}${
+                  creando ? ' asistente--escribiendo' : ''
+                }`}
+              >
+                <div className="asistente-figura" aria-hidden="true">
+                  <div className="asistente-cabeza">
+                    <span className="asistente-ojo" />
+                    <span className="asistente-ojo" />
+                    <span className="asistente-boca" />
+                  </div>
+                  <div className="asistente-ondas">
+                    <i />
+                    <i />
+                    <i />
+                    <i />
+                  </div>
+                </div>
+                <div className="asistente-burbuja">
+                  {escuchando
+                    ? descripcion
+                      ? `…${descripcion.slice(-120)}`
+                      : '🔴 ¡Te escucho! Dime qué contrato necesitas…'
+                    : creando
+                    ? '✍️ Estoy redactando tu contrato a la medida…'
+                    : '¡Hola! Soy Lexi. Toca 🎤 y cuéntame qué contrato quieres; yo lo voy escribiendo.'}
+                </div>
+              </div>
               <textarea
                 className="editor-text"
                 placeholder="Ej: Necesito un contrato de arrendamiento de un departamento por 12 meses, renta de $8,000 al mes, depósito de un mes reembolsable, el inquilino paga luz y agua…"
