@@ -625,7 +625,7 @@ function Inicio({ onProbarEjemplo, onIrServicios }) {
           </h1>
           <p className="hero-sub">
             El auxiliar jurídico con IA que hace el primer barrido de cualquier contrato en segundos:
-            detecta cláusulas riesgosas, qué preguntar y cómo mejorarlo — para que el abogado decida
+            detecta cláusulas riesgosas, qué preguntar y cómo mejorarlo, para que el abogado decida
             con todo sobre la mesa.
           </p>
           <div className="hero-trust">

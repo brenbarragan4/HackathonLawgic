@@ -1730,3 +1730,64 @@
     grid-template-columns: 1fr;
   }
 }
+
+/* ---------- Documento de contrato (mockup portada) ---------- */
+.mock-stack {
+  position: relative;
+  display: inline-block;
+  padding: 18px 0 0 30px;
+}
+.mock-stack .mock-card {
+  position: relative;
+  z-index: 2;
+}
+.mock-doc {
+  position: absolute;
+  top: -16px;
+  left: -30px;
+  width: 178px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 12px;
+  padding: 16px 16px 24px;
+  transform: rotate(-8deg);
+  box-shadow: 0 14px 32px rgba(15, 31, 61, 0.14);
+  z-index: 1;
+}
+.doc-tag {
+  display: block;
+  font-weight: 800;
+  font-size: 12px;
+  letter-spacing: 2.5px;
+  color: var(--head);
+  margin-bottom: 12px;
+}
+.doc-line {
+  display: block;
+  height: 7px;
+  border-radius: 4px;
+  background: var(--line);
+  margin: 9px 0;
+}
+.doc-line.w85 { width: 85%; }
+.doc-line.w75 { width: 75%; }
+.doc-line.w60 { width: 60%; }
+.doc-line.w50 { width: 50%; }
+.doc-stamp {
+  position: absolute;
+  bottom: -12px;
+  right: -14px;
+  background: var(--red-bg);
+  color: var(--red);
+  border: 2px solid var(--red);
+  border-radius: 8px;
+  font-weight: 800;
+  font-size: 11px;
+  letter-spacing: 0.5px;
+  padding: 5px 9px;
+  transform: rotate(-9deg);
+}
+@media (max-width: 720px) {
+  .mock-doc { display: none; }
+  .mock-stack { padding: 0; }
+}
